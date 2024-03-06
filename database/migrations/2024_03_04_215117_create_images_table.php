@@ -11,10 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('reservations', function (Blueprint $table) {
-            $table->id();
+        Schema::create('images', function (Blueprint $table) {
+            $table->id();          
+            $table->string('path');
+            $table->morphs('imageable');
             $table->timestamps();
-        });
+            });
     }
 
     /**
@@ -22,6 +24,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('reservations');
+        Schema::dropIfExists('images');
     }
 };

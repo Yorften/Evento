@@ -3,6 +3,10 @@
 namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+
+use App\Models\User;
+use App\Models\Category;
+use App\Models\Event;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -14,7 +18,11 @@ class DatabaseSeeder extends Seeder
     {
         $this->call(RoleSeeder::class);
         $this->call(AdminSeeder::class);
-        // \App\Models\User::factory(10)->create();
+        Category::factory(20)->create();
+        User::factory(20)->withRole('organizer')->create();
+        User::factory(50)->withRole('client')->create();
+        Event::factory(20)->create();
+
 
         // \App\Models\User::factory()->create([
         //     'name' => 'Test User',

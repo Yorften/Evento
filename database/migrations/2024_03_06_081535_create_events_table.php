@@ -13,6 +13,14 @@ return new class extends Migration
     {
         Schema::create('events', function (Blueprint $table) {
             $table->id();
+            $table->string('title');
+            $table->longText('description');
+            $table->integer('capacity');
+            $table->dateTime('date');
+            $table->string('location');
+            $table->boolean('verified')->default(false);
+            $table->foreignId('category_id')->constrained();
+            $table->foreignId('user_id')->constrained();
             $table->timestamps();
         });
     }

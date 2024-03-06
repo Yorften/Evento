@@ -11,10 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('clients', function (Blueprint $table) {
+        Schema::create('bans', function (Blueprint $table) {
             $table->id();
+            $table->dateTime('ban_expiry')->nullable();
+            $table->text('reason');
             $table->foreignId('user_id')->constrained();
-            // additional columns
             $table->timestamps();
         });
     }
@@ -24,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('clients');
+        Schema::dropIfExists('bans');
     }
 };
