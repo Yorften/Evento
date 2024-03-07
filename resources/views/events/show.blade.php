@@ -92,8 +92,10 @@
                 </div>
                 <p class="w-full flex items-center text-lg font-medium h-14 p-4 border-b-2 border-gray-300">Reserve your
                     tickets</p>
-                <form action="{{route('reservations.store', $event->id)}}" method="POST" class="flex flex-col items-center w-full">
+                <form action="{{ route('reservations.store') }}" method="POST"
+                    class="flex flex-col items-center w-full">
                     @csrf
+                    <input type="hidden" name="event_id" value="{{ $event->id }}">
                     <div class="flex px-2 w-full items-center justify-between my-6">
                         <p class="font-medium text-gray-600">Normal - 250 MAD</p>
                         <x-ticket-counter :max="$event->capacity - ($event->clients ? $event->clients->count() : 0)" />

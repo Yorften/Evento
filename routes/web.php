@@ -34,7 +34,7 @@ Route::middleware('account_verification')->group(function () {
 
     Route::middleware('role:organizer')->group(function () {
         Route::get('/organizer/dashboard', [OrganizerController::class, 'stats'])->name('organizer.dashboard');
-        Route::resource('organizer.events', EventController::class)->except(['create', 'edit']);
+        Route::resource('/organizer/events', EventController::class)->except(['create', 'edit']);
         Route::resource('/dashboard/notifications', NotificationController::class)->only('show');
     });
 
