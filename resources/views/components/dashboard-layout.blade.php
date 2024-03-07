@@ -111,40 +111,80 @@
                                 <div class="text-sm font-light tracking-wide text-white uppercase"></div>
                             </div>
                         </li>
-                        <li>
-                            <a href="{{ route('dashboard') }}"
-                                class="relative flex flex-row items-center h-11 focus:outline-none hover:bg-blue-800 text-white-600 hover:text-white-800 border-l-4 border-transparent hover:border-blue-500 pr-6">
-                                <span class="inline-flex justify-center items-center ml-4">
-                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"
-                                        xmlns="http://www.w3.org/2000/svg">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6">
-                                        </path>
-                                    </svg>
-                                </span>
-                                <span class="ml-2 text-sm tracking-wide truncate">Dashboard</span>
-                            </a>
-                        </li>
-                        <li class="px-5 hidden md:block ">
-                            <hr class="border-[1.2px] rounded-full">
-                        </li>
-                        <li>
-                            <a href="{{ route('actor.index') }}"
-                                class="relative flex flex-row items-center h-11 focus:outline-none hover:bg-blue-800 text-white-600 hover:text-white-800 border-l-4 border-transparent hover:border-blue-500 pr-6">
-                                <span class="inline-flex justify-center items-center ml-4">
-                                    <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
-                                        fill="#ffffff" version="1.1" id="Capa_1" class="w-5 h-5"
-                                        viewBox="0 0 800 800" xml:space="preserve">
-                                        <g>
-                                            <path
-                                                d="M290.973,331.347c0-55.45,44.987-100.406,100.499-100.406c55.534,0,100.586,44.957,100.586,100.406   c0,55.513-45.053,100.407-100.586,100.407C335.959,431.754,290.973,386.859,290.973,331.347z M800,111.167   c0,24.191-24.697,43.794-55.989,45.69V775H46.723V155.866C19.944,151.084,0,132.946,0,111.167c0-25.42,27.149-46.013,60.678-46.013   h260.588V25H486.35v40.154h252.93C772.808,65.154,800,85.748,800,111.167z M305.491,555.059   c-24.328,33.109-39.367,88.149-43.88,161.479h36.285C300.716,652.169,303.733,589.827,305.491,555.059z M488.673,716.536h30.251   c-2.258-73.286-16.516-128.11-41.472-161.436C480.664,594.479,485.895,661.646,488.673,716.536z M685.005,157.246H105.729v559.291   h84.788c6.206-111.716,33.181-187.521,82.703-231.296c10.157-9.003,20.877-17.233,32.531-24.019   c6.641-3.898,13.693-7.044,20.941-9.606c17.751-6.334,36.609-9.308,55.426-9.954l-32.509,272.505l2.321,2.37h75.935l1.996-2.37   L403.93,442.05c17.208,1.186,34.439,4.31,50.803,9.952c17.577,6.117,32.746,15.791,47.373,27.122   c55.145,42.631,84.614,122.615,87.782,237.412h95.117V157.246z" />
-                                        </g>
-                                    </svg>
-                                </span>
-                                <span class="ml-2 text-sm tracking-wide truncate">Actors</span>
+                        @hasrole('admin')
+                            <li>
+                                <a href="{{ route('admin.dashboard') }}"
+                                    class="relative flex flex-row items-center h-11 focus:outline-none hover:bg-blue-800 text-white-600 hover:text-white-800 border-l-4 border-transparent hover:border-blue-500 pr-6">
+                                    <span class="inline-flex justify-center items-center ml-4">
+                                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                                            xmlns="http://www.w3.org/2000/svg">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6">
+                                            </path>
+                                        </svg>
+                                    </span>
+                                    <span class="ml-2 text-sm tracking-wide truncate">Dashboard</span>
+                                </a>
+                            </li>
+                            <li class="px-5 hidden md:block ">
+                                <hr class="border-[1.2px] rounded-full">
+                            </li>
 
-                            </a>
-                        </li>
+                            <li>
+                                <a href="{{ route('actor.index') }}"
+                                    class="relative flex flex-row items-center h-11 focus:outline-none hover:bg-blue-800 text-white-600 hover:text-white-800 border-l-4 border-transparent hover:border-blue-500 pr-6">
+                                    <span class="inline-flex justify-center items-center ml-4">
+                                        <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+                                            fill="#ffffff" version="1.1" id="Capa_1" class="w-5 h-5"
+                                            viewBox="0 0 800 800" xml:space="preserve">
+                                            <g>
+                                                <path
+                                                    d="M290.973,331.347c0-55.45,44.987-100.406,100.499-100.406c55.534,0,100.586,44.957,100.586,100.406   c0,55.513-45.053,100.407-100.586,100.407C335.959,431.754,290.973,386.859,290.973,331.347z M800,111.167   c0,24.191-24.697,43.794-55.989,45.69V775H46.723V155.866C19.944,151.084,0,132.946,0,111.167c0-25.42,27.149-46.013,60.678-46.013   h260.588V25H486.35v40.154h252.93C772.808,65.154,800,85.748,800,111.167z M305.491,555.059   c-24.328,33.109-39.367,88.149-43.88,161.479h36.285C300.716,652.169,303.733,589.827,305.491,555.059z M488.673,716.536h30.251   c-2.258-73.286-16.516-128.11-41.472-161.436C480.664,594.479,485.895,661.646,488.673,716.536z M685.005,157.246H105.729v559.291   h84.788c6.206-111.716,33.181-187.521,82.703-231.296c10.157-9.003,20.877-17.233,32.531-24.019   c6.641-3.898,13.693-7.044,20.941-9.606c17.751-6.334,36.609-9.308,55.426-9.954l-32.509,272.505l2.321,2.37h75.935l1.996-2.37   L403.93,442.05c17.208,1.186,34.439,4.31,50.803,9.952c17.577,6.117,32.746,15.791,47.373,27.122   c55.145,42.631,84.614,122.615,87.782,237.412h95.117V157.246z" />
+                                            </g>
+                                        </svg>
+                                    </span>
+                                    <span class="ml-2 text-sm tracking-wide truncate">Actors</span>
+                                </a>
+                            </li>
+                        @endhasrole
+                        @hasrole('organizer')
+                            <li>
+                                <a href="{{ route('organizer.dashboard') }}"
+                                    class="relative flex flex-row items-center h-11 focus:outline-none hover:bg-blue-800 text-white-600 hover:text-white-800 border-l-4 border-transparent hover:border-blue-500 pr-6">
+                                    <span class="inline-flex justify-center items-center ml-4">
+                                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                                            xmlns="http://www.w3.org/2000/svg">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6">
+                                            </path>
+                                        </svg>
+                                    </span>
+                                    <span class="ml-2 text-sm tracking-wide truncate">Dashboard</span>
+                                </a>
+                            </li>
+                            <li class="px-5 hidden md:block ">
+                                <hr class="border-[1.2px] rounded-full">
+                            </li>
+
+                            <li>
+                                <a href="{{ route('actor.index') }}"
+                                    class="relative flex flex-row items-center h-11 focus:outline-none hover:bg-blue-800 text-white-600 hover:text-white-800 border-l-4 border-transparent hover:border-blue-500 pr-6">
+                                    <span class="inline-flex justify-center items-center ml-4">
+                                        <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+                                            fill="#ffffff" version="1.1" id="Capa_1" class="w-5 h-5"
+                                            viewBox="0 0 800 800" xml:space="preserve">
+                                            <g>
+                                                <path
+                                                    d="M290.973,331.347c0-55.45,44.987-100.406,100.499-100.406c55.534,0,100.586,44.957,100.586,100.406   c0,55.513-45.053,100.407-100.586,100.407C335.959,431.754,290.973,386.859,290.973,331.347z M800,111.167   c0,24.191-24.697,43.794-55.989,45.69V775H46.723V155.866C19.944,151.084,0,132.946,0,111.167c0-25.42,27.149-46.013,60.678-46.013   h260.588V25H486.35v40.154h252.93C772.808,65.154,800,85.748,800,111.167z M305.491,555.059   c-24.328,33.109-39.367,88.149-43.88,161.479h36.285C300.716,652.169,303.733,589.827,305.491,555.059z M488.673,716.536h30.251   c-2.258-73.286-16.516-128.11-41.472-161.436C480.664,594.479,485.895,661.646,488.673,716.536z M685.005,157.246H105.729v559.291   h84.788c6.206-111.716,33.181-187.521,82.703-231.296c10.157-9.003,20.877-17.233,32.531-24.019   c6.641-3.898,13.693-7.044,20.941-9.606c17.751-6.334,36.609-9.308,55.426-9.954l-32.509,272.505l2.321,2.37h75.935l1.996-2.37   L403.93,442.05c17.208,1.186,34.439,4.31,50.803,9.952c17.577,6.117,32.746,15.791,47.373,27.122   c55.145,42.631,84.614,122.615,87.782,237.412h95.117V157.246z" />
+                                            </g>
+                                        </svg>
+                                    </span>
+                                    <span class="ml-2 text-sm tracking-wide truncate">Actors</span>
+
+                                </a>
+                            </li>
+                        @endhasrole
+
                         <li>
                             <a href="{{ route('genre.index') }}"
                                 class="relative flex flex-row items-center h-11 focus:outline-none hover:bg-blue-800 text-white-600 hover:text-white-800 border-l-4 border-transparent hover:border-blue-500 pr-6">

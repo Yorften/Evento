@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Event;
 use Illuminate\Http\Request;
 
 class EventController extends Controller
@@ -11,20 +12,28 @@ class EventController extends Controller
      */
     public function index()
     {
-        //
+        $evets = Event::paginate(6);
+        return view('events', compact('events'));
     }
 
-    /**
-     * Display a listing of the resource.
-     */
+    public function adminIndex()
+    {
+        $events = Event::all();
+        return view('dashboard.admin.events.index', compact('events'));
+    }
+
+    public function pending()
+    {
+        $events = Event::where('verified', false)->get();
+        return view('dashboard.admin.events.pending', compact('events'));
+    }
+
     public function latest()
     {
         return view('welcome');
     }
 
-    /**
-     * Display a listing of the resource.
-     */
+
     public function stats()
     {
         return view('dashboard.admin.index');

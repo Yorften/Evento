@@ -13,18 +13,23 @@
                 <!-- Navigation Links -->
                 @hasrole('admin')
                     <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
-                        <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
+                        <x-nav-link :href="route('admin.dashboard')" :active="request()->routeIs('dashboard')">
                             {{ __('Dashboard') }}
                         </x-nav-link>
                     </div>
                 @endhasrole
-                @hasrole('member')
+                @hasrole('organizer')
+                    <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
+                        <x-nav-link :href="route('organizer.dashboard')" :active="request()->routeIs('dashboard')">
+                            {{ __('Dashboard') }}
+                        </x-nav-link>
+                    </div>
                 @endhasrole
 
                 {{-- Add nav items that visitor can view below --}}
                 <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
-                    <x-nav-link :href="route('films.index')" :active="request()->routeIs('films.index')">
-                        {{ __('Films') }}
+                    <x-nav-link :href="route('events.index')" :active="request()->routeIs('events.index')">
+                        {{ __('Events') }}
                     </x-nav-link>
                 </div>
                 {{-- End nav items --}}

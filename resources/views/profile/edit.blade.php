@@ -13,6 +13,21 @@
                 </div>
             </div>
 
+            @role('client')
+                <div class="p-4 sm:p-8 bg-white shadow sm:rounded-lg">
+                    <div class="max-w-xl">
+                        @include('profile.partials.update-client-information-form')
+                    </div>
+                </div>
+            @endrole
+            @role('organizer')
+                <div class="p-4 sm:p-8 bg-white shadow sm:rounded-lg">
+                    <div class="max-w-xl">
+                        @include('profile.partials.update-organizer-information-form')
+                    </div>
+                </div>
+            @endrole
+
             <div class="p-4 sm:p-8 bg-white shadow sm:rounded-lg">
                 <div class="max-w-xl">
                     @include('profile.partials.update-password-form')
