@@ -5,7 +5,7 @@ namespace Database\Factories;
 use App\Models\User;
 use App\Models\Event;
 use App\Models\Category;
-
+use App\Models\Organizer;
 use App\Traits\ImageUpload;
 use function Laravel\Prompts\text;
 use Illuminate\Database\Eloquent\Factories\Factory;
@@ -24,9 +24,9 @@ class EventFactory extends Factory
     public function definition(): array
     {
         $category_id = Category::inRandomOrder()->pluck('id')->first();
-        $user_id = User::role('organizer')->inRandomOrder()->pluck('id')->first();
+        $organizer_id = Organizer::inRandomOrder()->pluck('id')->first();
         return [
-            'user_id' => $user_id,
+            'organizer_id' => $organizer_id,
             'category_id' => $category_id,
             'title' => fake()->title(),
             'description' => fake()->text(1000),

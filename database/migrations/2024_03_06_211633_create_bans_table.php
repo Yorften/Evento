@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->dateTime('ban_expiry')->nullable();
             $table->text('reason');
-            $table->foreignId('user_id')->constrained();
+            $table->foreignId('user_id')->constrained()->cascadeOnDelete();
             $table->timestamps();
         });
     }

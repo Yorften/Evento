@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
-class EventController extends Controller
+class ClientController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -12,14 +12,6 @@ class EventController extends Controller
     public function index()
     {
         //
-    }
-
-    /**
-     * Display a listing of the resource.
-     */
-    public function latest()
-    {
-        return view('welcome');
     }
 
     /**

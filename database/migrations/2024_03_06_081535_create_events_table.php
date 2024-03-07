@@ -19,8 +19,10 @@ return new class extends Migration
             $table->dateTime('date');
             $table->string('location');
             $table->boolean('verified')->default(false);
-            $table->foreignId('category_id')->constrained();
-            $table->foreignId('user_id')->constrained();
+            $table->boolean('auto')->default(false);
+            $table->foreignId('category_id')->nullable()->constrained()->onDelete('set null');
+            $table->foreignId('organizer_id')->constrained()->cascadeOnDelete();
+            $table->timestamp('read_at')->nullable();
             $table->timestamps();
         });
     }
