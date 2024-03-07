@@ -50,16 +50,20 @@ class UserFactory extends Factory
     {
         return $this->afterCreating(function (User $user) use ($role) {
             $user->assignRole($role);
-            if($role == 'client'){
+            if ($role == 'client') {
                 Client::create([
                     'user_id' => $user->id,
                     'phone' => fake()->phoneNumber(),
+                    'country' => fake()->country(),
+                    'city' => fake()->city(),
                 ]);
-            }else{
+            } else {
                 Organizer::create([
                     'user_id' => $user->id,
                     'phone' => fake()->phoneNumber(),
                     'company' => fake()->company(),
+                    'website' => fake()->domainName(),
+                    'type' => fake()->randomElement(['individual', 'company', 'nonprofit']),
                 ]);
             }
         });

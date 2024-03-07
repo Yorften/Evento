@@ -16,6 +16,8 @@ return new class extends Migration
             $table->foreignId('user_id')->constrained()->cascadeOnDelete();
             $table->string('phone');
             $table->string('company')->nullable();
+            $table->string('website')->nullable();
+            $table->enum('type', ['individual', 'company', 'nonprofit']);
             $table->timestamps();
         });
     }
