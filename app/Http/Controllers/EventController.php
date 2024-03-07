@@ -23,6 +23,14 @@ class EventController extends Controller
     }
 
     /**
+     * Display a listing of the resource.
+     */
+    public function stats()
+    {
+        return view('dashboard.admin.index');
+    }
+
+    /**
      * Show the form for creating a new resource.
      */
     public function create()

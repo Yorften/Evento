@@ -14,6 +14,12 @@ class OrganizerController extends Controller
         //
     }
 
+
+    public function stats()
+    {
+        return view('dashboard.organizer.index');
+    }
+
     /**
      * Show the form for creating a new resource.
      */
