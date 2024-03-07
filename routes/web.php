@@ -1,11 +1,12 @@
 <?php
 
-use App\Http\Controllers\CategoryController;
-use App\Http\Controllers\ClientController;
-use App\Http\Controllers\EventController;
-use App\Http\Controllers\OrganizerController;
-use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\EventController;
+use App\Http\Controllers\ClientController;
+use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\OrganizerController;
+use App\Http\Controllers\ReservationController;
 
 /*
 |--------------------------------------------------------------------------
@@ -21,20 +22,25 @@ use Illuminate\Support\Facades\Route;
 
 
 Route::middleware('account_verification')->group(function () {
-    Route::get('/', [EventController::class, 'latest'])->name('events.latest');
+    Route::get('/', [EventController::class, 'latest'])->name('welcome');
+
+    Route::resource('events', EventController::class)->only(['index', 'show']);
+
+    Route::middleware('role:client')->group(function () {
+        Route::resource('reservations', ReservationController::class)->only(['index', 'show', 'store']);
+    });
+
+    Route::middleware('role:organizer')->group(function () {
+        Route::resource('/organizer/events', EventController::class)->except(['create', 'edit']);
+    });
+
+    Route::middleware('role:admin')->group(function () {
+        Route::resource('/dashboard/events', EventController::class)->only(['index']);
+        Route::resource('/dashboard/categories', CategoryController::class)->except(['create', 'edit', 'show']);
+        Route::resource('/dashboard/organizers', OrganizerController::class)->only('index');
+        Route::resource('/dashboard/clients', ClientController::class)->only('index');
+    });
 });
-
-
-
-
-Route::middleware('auth', 'account_verification')->group(function () {
-    Route::resource('categories', CategoryController::class)->except(['create', 'edit']);
-    Route::resource('events', EventController::class)->except(['create', 'edit']);
-    Route::resource('organizers', OrganizerController::class)->except(['create', 'store', 'edit']);
-    Route::resource('clients', ClientController::class)->except(['create', 'store', 'edit']);
-});
-
-
 
 
 

@@ -38,7 +38,7 @@ class ClientOrganizerVerification
             }
         }
 
-        if ($ban = Ban::where('user_id', $user->id)->where(function ($query) {
+        if ($user && $ban = Ban::where('user_id', $user->id)->where(function ($query) {
             $query->where('ban_expiry', '>', now()->toDateTimeString())
                 ->orWhereNull('ban_expiry');
         })->orderBy('ban_expiry', 'desc')->get()) {

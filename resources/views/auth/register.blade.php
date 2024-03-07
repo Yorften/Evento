@@ -45,8 +45,8 @@
             <x-input-label for="role" :value="__('Role')" />
             <x-select-input id="role" class="block mt-1 w-full" name="role">
                 <option value="" disabled selected hidden>Select...</option>
-                <option value="patient">Patient</option>
-                <option value="doctor">Doctor</option>
+                <option value="client">Client</option>
+                <option value="organizer">Organizer</option>
             </x-select-input>
             <x-input-error-js id="roleErr"></x-input-error-js>
             <x-input-error :messages="$errors->get('role')" class="mt-2" />
