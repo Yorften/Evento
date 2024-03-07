@@ -28,7 +28,7 @@ class EventFactory extends Factory
         return [
             'organizer_id' => $organizer_id,
             'category_id' => $category_id,
-            'title' => fake()->title(),
+            'title' => fake()->sentence(),
             'description' => fake()->text(1000),
             'capacity' => fake()->numberBetween(200, 2000),
             'date' => fake()->dateTimeBetween('now', '+1 week'),

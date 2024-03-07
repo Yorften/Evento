@@ -3,16 +3,20 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\MorphOne;
 
 class Event extends Model
 {
     use HasFactory;
 
-    public function images(): MorphMany
+    protected $casts = [
+        'date' => 'datetime',
+    ];
+
+    public function image(): MorphOne
     {
-        return $this->morphMany(Image::class, 'imageable');
+        return $this->morphOne(Image::class, 'imageable');
     }
 
     public function organizer()
@@ -24,9 +28,9 @@ class Event extends Model
     {
         return $this->belongsTo(Category::class);
     }
-    
-    public function users()
+
+    public function clients()
     {
-        return $this->belongsToMany(User::class);
+        return $this->belongsToMany(Client::class);
     }
 }

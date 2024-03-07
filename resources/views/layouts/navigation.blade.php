@@ -1,4 +1,4 @@
-<nav x-data="{ open: false }" class="bg-white border-b border-gray-100 shadow-md">
+<nav x-data="{ open: false }" class="bg-white border-b border-gray-100 shadow-lg">
     <!-- Primary Navigation Menu -->
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex justify-between h-16">
@@ -13,14 +13,14 @@
                 <!-- Navigation Links -->
                 @hasrole('admin')
                     <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
-                        <x-nav-link :href="route('admin.dashboard')" :active="request()->routeIs('dashboard')">
+                        <x-nav-link :href="route('admin.dashboard')" :active="request()->routeIs('admin.dashboard')">
                             {{ __('Dashboard') }}
                         </x-nav-link>
                     </div>
                 @endhasrole
                 @hasrole('organizer')
                     <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
-                        <x-nav-link :href="route('organizer.dashboard')" :active="request()->routeIs('dashboard')">
+                        <x-nav-link :href="route('organizer.dashboard')" :active="request()->routeIs('organizer.dashboard')">
                             {{ __('Dashboard') }}
                         </x-nav-link>
                     </div>
@@ -42,11 +42,13 @@
                         <x-slot name="trigger">
                             <button
                                 class="relative inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 bg-white hover:text-gray-700 focus:outline-none transition ease-in-out duration-150">
-                                @if ($count = $notifications->where('read_at', null)->count() > 0)
-                                    <div
-                                        class="absolute inline-flex items-center justify-center w-6 h-6 text-xs font-bold text-white bg-red-500 border-2 border-white rounded-full -top-2 -end-0 dark:border-gray-900">
-                                        {{ $count }}</div>
-                                @endif
+                                @isset($notifications)
+                                    @if ($count = $notifications->where('read_at', null)->count() > 0)
+                                        <div
+                                            class="absolute inline-flex items-center justify-center w-6 h-6 text-xs font-bold text-white bg-red-500 border-2 border-white rounded-full -top-2 -end-0 dark:border-gray-900">
+                                            {{ $count }}</div>
+                                    @endif
+                                @endisset
                                 <div>{{ Auth::user()->name }}</div>
 
                                 <div class="ms-1">
@@ -64,9 +66,19 @@
                             <x-dropdown-link :href="route('profile.edit')">
                                 {{ __('Profile') }}
                             </x-dropdown-link>
-                            @hasrole('member')
-                                <x-dropdown-link :href="route('reservation.index')">
+                            @hasrole('admin')
+                            <x-dropdown-link :href="route('admin.dashboard')">
+                                {{ __('Reservations') }}
+                            </x-dropdown-link>
+                            @endhasrole
+                            @hasrole('client')
+                                <x-dropdown-link :href="route('reservations.index')">
                                     {{ __('Reservations') }}
+                                </x-dropdown-link>
+                            @endhasrole
+                            @hasrole('organizer')
+                                <x-dropdown-link :href="route('organizer.dashboard')">
+                                    {{ __('Dashboard') }}
                                 </x-dropdown-link>
                                 <x-dropdown-button data-modal-toggle="notifications-modal"
                                     data-modal-target="notifications-modal" :count="$notifications->where('read_at', null)->count()">
@@ -97,11 +109,13 @@
             <div class="-me-2 flex items-center sm:hidden">
                 <button @click="open = ! open"
                     class="relative inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 focus:text-gray-500 transition duration-150 ease-in-out">
-                    @if ($count = $notifications->where('read_at', null)->count() > 0)
-                        <div
-                            class="absolute inline-flex items-center justify-center w-6 h-6 text-xs font-bold text-white bg-red-500 border-2 border-white rounded-full -top-2 -end-2 dark:border-gray-900">
-                            {{ $count }}</div>
-                    @endif
+                    @isset($notifications)
+                        @if ($count = $notifications->where('read_at', null)->count() > 0)
+                            <div
+                                class="absolute inline-flex items-center justify-center w-6 h-6 text-xs font-bold text-white bg-red-500 border-2 border-white rounded-full -top-2 -end-2 dark:border-gray-900">
+                                {{ $count }}</div>
+                        @endif
+                    @endisset
                     <svg class="h-6 w-6" stroke="currentColor" fill="none" viewBox="0 0 24 24">
                         <path :class="{ 'hidden': open, 'inline-flex': !open }" class="inline-flex"
                             stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -118,28 +132,29 @@
     <div :class="{ 'block': open, 'hidden': !open }" class="hidden sm:hidden">
         @hasrole('admin')
             <div class="pt-2 pb-3 space-y-1">
-                <x-responsive-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
+                <x-responsive-nav-link :href="route('admin.dashboard')" :active="request()->routeIs('admin.dashboard')">
                     {{ __('Dashboard') }}
                 </x-responsive-nav-link>
             </div>
         @endhasrole
-        @hasrole('member')
+        @hasrole('organizer')
             <div class="pt-2 pb-3 space-y-1">
-                <x-responsive-nav-link :href="route('reservation.index')" :active="request()->routeIs('reservation.index')">
+                <x-responsive-nav-link :href="route('organizer.dashboard')" :active="request()->routeIs('organizer.dashboard')">
+                    {{ __('Dashboard') }}
+                </x-responsive-nav-link>
+            </div>
+        @endhasrole
+        @hasrole('client')
+            <div class="pt-2 pb-3 space-y-1">
+                <x-responsive-nav-link :href="route('reservations.index')" :active="request()->routeIs('reservations.index')">
                     {{ __('Reservations') }}
                 </x-responsive-nav-link>
             </div>
-            <div class="pt-2 pb-3 space-y-1">
-                <x-responsive-nav-button data-modal-toggle="notifications-modal" data-modal-target="notifications-modal"
-                    :count="$notifications->where('read_at', null)->count()">
-                    {{ __('Notifications') }}
-                </x-responsive-nav-button>
-            </div>ù
         @endhasrole
         {{-- no roles needed --}}
         <div class="pt-2 pb-3 space-y-1">
-            <x-responsive-nav-link :href="route('films.index')" :active="request()->routeIs('films.index')">
-                {{ __('Films') }}
+            <x-responsive-nav-link :href="route('events.index')" :active="request()->routeIs('events.index')">
+                {{ __('Events') }}
             </x-responsive-nav-link>
         </div>
         {{--  --}}

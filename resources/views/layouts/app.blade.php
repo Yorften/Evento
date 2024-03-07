@@ -32,7 +32,9 @@
             </header>
         @endif
 
-        <x-notifications-modal :notifications="$notifications" />
+        @isset($notifications)
+            <x-notifications-modal :notifications="$notifications" />
+        @endisset
 
         <!-- Page Content -->
         <main class="min-h-[90vh]">

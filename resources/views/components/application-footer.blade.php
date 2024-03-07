@@ -3,8 +3,7 @@
     class="bg-white text-center text-gray-800 shadow-[0px_4px_16px_rgba(17,17,26,0.1),_0px_8px_24px_rgba(17,17,26,0.1),_0px_16px_56px_rgba(17,17,26,0.1)] border-t-2">
 
     <!-- Social media -->
-    <div
-        class="flex items-center justify-center border-b-2 border-neutral-200 p-6 lg:justify-between">
+    <div class="flex items-center justify-center border-b-2 border-neutral-200 p-6 lg:justify-between">
         <div class="mr-12 hidden md:block">
             <span>Get connected with us:</span>
         </div>
@@ -147,7 +146,7 @@
     </div>
 
     <!-- Copyright -->
-    <div class="bg-neutral-200 p-6 text-center flex justify-center items-center">
+    <div class="bg-neutral-200 p-2 text-center flex justify-center items-center">
 
         <span>© 2023 Copyright: </span>
 

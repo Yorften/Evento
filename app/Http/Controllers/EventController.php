@@ -12,8 +12,8 @@ class EventController extends Controller
      */
     public function index()
     {
-        $evets = Event::paginate(6);
-        return view('events', compact('events'));
+        $events = Event::paginate(6);
+        return view('events.index', compact('events'));
     }
 
     public function adminIndex()
@@ -30,7 +30,8 @@ class EventController extends Controller
 
     public function latest()
     {
-        return view('welcome');
+        $events = Event::where('date', '>', now()->toDateTimeString())->orderBy('date')->get();
+        return view('welcome', compact('events'));
     }
 
 
@@ -39,13 +40,6 @@ class EventController extends Controller
         return view('dashboard.admin.index');
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
 
     /**
      * Store a newly created resource in storage.
@@ -55,26 +49,21 @@ class EventController extends Controller
         //
     }
 
+
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(Event $event)
     {
-        //
+        $event->load('category', 'organizer.user', 'clients');
+        return view('events.show',compact('event'));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        //
-    }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, Event $event)
     {
         //
     }
@@ -82,7 +71,7 @@ class EventController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Event $event)
     {
         //
     }
