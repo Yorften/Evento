@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('organizers', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained();
-            $table->foreignId('phone');
+            $table->string('phone');
             $table->string('company')->nullable();
             $table->timestamps();
         });

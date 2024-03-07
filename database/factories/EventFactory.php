@@ -3,16 +3,19 @@
 namespace Database\Factories;
 
 use App\Models\User;
+use App\Models\Event;
 use App\Models\Category;
-use Illuminate\Database\Eloquent\Factories\Factory;
 
+use App\Traits\ImageUpload;
 use function Laravel\Prompts\text;
+use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Event>
  */
 class EventFactory extends Factory
 {
+    use ImageUpload;
     /**
      * Define the model's default state.
      *
@@ -27,9 +30,17 @@ class EventFactory extends Factory
             'category_id' => $category_id,
             'title' => fake()->title(),
             'description' => fake()->text(1000),
-            'capacity' => fake()->numberBetween(200,2000),
+            'capacity' => fake()->numberBetween(200, 2000),
             'date' => fake()->dateTimeBetween('now', '+1 week'),
             'location' => fake()->city(),
         ];
+    }
+
+    public function withImage()
+    {
+        return $this->afterCreating(function (Event $event) {
+            $imageUrl = $this->faker->imageUrl(360, 360, 'event');
+            $this->storeFakeImg($imageUrl, $event);
+        });
     }
 }
