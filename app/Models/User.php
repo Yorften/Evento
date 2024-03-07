@@ -43,4 +43,19 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
+
+    public function bans()
+    {
+        return $this->belongsToMany(Ban::class);
+    }
+
+    public function clients()
+    {
+        return $this->hasMany(Client::class);
+    }
+
+    public function organizers()
+    {
+        return $this->hasMany(Organizer::class);
+    }
 }

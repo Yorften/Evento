@@ -3,6 +3,8 @@
 namespace Database\Factories;
 
 use App\Models\User;
+use App\Models\Client;
+use App\Models\Organizer;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Database\Eloquent\Factories\Factory;
@@ -48,6 +50,18 @@ class UserFactory extends Factory
     {
         return $this->afterCreating(function (User $user) use ($role) {
             $user->assignRole($role);
+            if($role == 'client'){
+                Client::create([
+                    'user_id' => $user->id,
+                    'phone' => fake()->phoneNumber(),
+                ]);
+            }else{
+                Organizer::create([
+                    'user_id' => $user->id,
+                    'phone' => fake()->phoneNumber(),
+                    'company' => fake()->company(),
+                ]);
+            }
         });
     }
 }
