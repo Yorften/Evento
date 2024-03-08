@@ -1,10 +1,18 @@
 window.addEventListener("DOMContentLoaded", () => {
+    let form = document.getElementById("event_form");
     const incButton = document.getElementById("increment-button");
     const decButton = document.getElementById("decrement-button");
     let ticketsElement = document.getElementById("quantity-input");
     let ticketElement = document.getElementById("number");
     let priceElement = document.getElementById("price");
     let price = 0;
+
+    form.addEventListener("submit", (event) => {
+        let tickets = ticketsElement.value;
+        if (tickets == 0) {
+            event.preventDefault();
+        }
+    });
 
     incButton.addEventListener("click", () => {
         let tickets = ticketsElement.value;

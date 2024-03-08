@@ -35,7 +35,7 @@
         @isset($notifications)
             <x-notifications-modal :notifications="$notifications" />
         @endisset
-
+        <x-sweet-alert />
         <!-- Page Content -->
         <main class="min-h-[90vh]">
             {{ $slot }}

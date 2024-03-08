@@ -2,7 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Event;
+use App\Models\Client;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use App\Http\Requests\StoreReservationRequest;
 
 class ReservationController extends Controller
 {
@@ -25,11 +29,19 @@ class ReservationController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(StoreReservationRequest $request)
     {
         $validated = $request->validated();
+        $event = Event::find($validated['event_id']);
+        $client = Client::where('user_id', Auth::id())->first();
+        for ($i = 0; $i < $validated['tickets']; $i++) {
+            $event->clients()->attach($client->id, ['created_at' => now(), 'updated_at' => now()]);
+        }
 
-        dd($validated);
+        return back()->with([
+            'message' => 'Ticket(s) reserved successfully! Awaiting organizer verification.',
+            'operationSuccessful' => true,
+        ]);
     }
 
     /**

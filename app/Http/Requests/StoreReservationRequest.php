@@ -22,7 +22,8 @@ class StoreReservationRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'event_id' => 'required',
+            'tickets' => 'required',
         ];
     }
 }

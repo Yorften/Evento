@@ -92,7 +92,7 @@
                 </div>
                 <p class="w-full flex items-center text-lg font-medium h-14 p-4 border-b-2 border-gray-300">Reserve your
                     tickets</p>
-                <form action="{{ route('reservations.store') }}" method="POST"
+                <form id="event_form" action="{{ route('reservations.store') }}" method="POST"
                     class="flex flex-col items-center w-full">
                     @csrf
                     <input type="hidden" name="event_id" value="{{ $event->id }}">
