@@ -16,11 +16,17 @@ class EventController extends Controller
         return view('events.index', compact('events'));
     }
 
-    public function adminIndex()
+    /*
+    **
+    ** Organizer functions
+    */
+
+
+    public function clients()
     {
-        $events = Event::all();
-        return view('dashboard.admin.events.index', compact('events'));
+        return view('dashboard.organizer.events.show');
     }
+
 
     public function organizerIndex()
     {
@@ -31,8 +37,36 @@ class EventController extends Controller
     public function pending()
     {
         $events = Event::where('verified', false)->get();
-        return view('dashboard.admin.events.pending', compact('events'));
+        return view('dashboard.organizer.events.pending', compact('events'));
     }
+
+    public function history()
+    {
+        $events = Event::paginate(6);
+        return view('dashboard.organizer.events.history');
+    }
+
+    /*
+    **
+    ** Admin functions
+    */
+
+    public function stats()
+    {
+        return view('dashboard.admin.index');
+    }
+
+
+    public function adminIndex()
+    {
+        $events = Event::all();
+        return view('dashboard.admin.events.index', compact('events'));
+    }
+
+    /*
+    **
+    ** 
+    */
 
     public function latest()
     {
@@ -40,11 +74,6 @@ class EventController extends Controller
         return view('welcome', compact('events'));
     }
 
-
-    public function stats()
-    {
-        return view('dashboard.admin.index');
-    }
 
 
     /**
@@ -62,7 +91,7 @@ class EventController extends Controller
     public function show(Event $event)
     {
         $event->load('category', 'organizer.user', 'clients');
-        return view('events.show',compact('event'));
+        return view('events.show', compact('event'));
     }
 
 

@@ -7,6 +7,7 @@ use App\Models\Client;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\StoreReservationRequest;
+use Carbon\Carbon;
 
 class ReservationController extends Controller
 {
@@ -15,7 +16,26 @@ class ReservationController extends Controller
      */
     public function index()
     {
-        //
+        $now = Carbon::now()->toDateTimeString();
+        $client = Client::where('user_id', Auth::id())->first();
+        $events = $client->events()->where('date', '>', $now)->wherePivot('accepted', true)->withPivot('created_at')->get();
+        return view('dashboard.client.reservations.index', compact('events'));
+    }
+
+    public function history()
+    {
+        $now = Carbon::now()->toDateTimeString();
+        $client = Client::where('user_id', Auth::id())->first();
+        $events = $client->events()->where('date', '<', $now)->wherePivot('accepted', true)->withPivot('created_at')->get();
+        return view('dashboard.client.reservations.history', compact('events'));
+    }
+
+    public function pending()
+    {
+        $now = Carbon::now()->toDateTimeString();
+        $client = Client::where('user_id', Auth::id())->first();
+        $events = $client->events()->where('date', '>', $now)->wherePivot('accepted', false)->withPivot('created_at')->get();
+        return view('dashboard.client.reservations.pending', compact('events'));
     }
 
     /**
