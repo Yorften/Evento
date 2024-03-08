@@ -40,7 +40,7 @@ Route::middleware('account_verification')->group(function () {
         Route::get('/organizer/dashboard/events/pending', [EventController::class, 'pending'])->name('events.pending');
         Route::get('/organizer/dashboard/events/history', [EventController::class, 'history'])->name('events.history');
         Route::get('/organizer/dashboard/events/{event}', [EventController::class, 'clients'])->name('organizer.clients');
-        Route::resource('/organizer/events', EventController::class)->only(['store', 'update', 'destroy']);
+        Route::resource('/organizer/dashboard/events', EventController::class)->only(['store', 'update', 'destroy']);
         Route::resource('/dashboard/notifications', NotificationController::class)->only('show');
     });
 
