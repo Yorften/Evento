@@ -40,6 +40,7 @@ class RegisteredUserController extends Controller
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
+            'email_verified_at' => now(),
         ]);
 
         // event(new Registered($user));
@@ -49,11 +50,11 @@ class RegisteredUserController extends Controller
         if ($request['role'] === 'client') {
             $user->assignRole('client');
             Auth::login($user);
-            return redirect()->route('client.create');
+            return redirect()->route('clients.create');
         } else {
             $user->assignRole('organizer');
             Auth::login($user);
-            return redirect()->route('organizer.create');
+            return redirect()->route('organizers.create');
         }
     }
 }

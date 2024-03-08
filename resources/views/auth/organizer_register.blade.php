@@ -1,23 +1,32 @@
 <x-guest-layout>
-    <form method="POST" id="register_form" action="{{ route('register.doctor') }}">
+    <form method="POST" id="register_form" action="{{ route('organizers.store') }}">
         @csrf
 
-        <!-- INPE Number -->
+        <!-- Company -->
         <div>
-            <x-input-label for="inpe" :value="__('INPE Number')" />
-            <x-text-input id="inpe" class="block mt-1 w-full" type="text" name="inpe" :value="old('inpe')"
+            <x-input-label for="company" :value="__('Company')" />
+            <x-text-input id="company" class="block mt-1 w-full" type="text" name="company" :value="old('company')"
                 autofocus />
-            <x-input-error-js id="inpeErr"></x-input-error-js>
-            <x-input-error :messages="$errors->get('inpe')" class="mt-2" />
+            <x-input-error-js id="companyErr"></x-input-error-js>
+            <x-input-error :messages="$errors->get('company')" class="mt-2" />
         </div>
 
-        <!-- Degree -->
+        <!-- Company email -->
         <div class="mt-4">
-            <x-input-label for="diploma" :value="__('Diploma')" />
-            <x-text-input id="diploma" class="block mt-1 w-full" type="text" name="diploma" :value="old('diploma')"
+            <x-input-label for="company_email" :value="__('Company Email')" />
+            <x-text-input id="company_email" class="block mt-1 w-full" type="text" name="company_email"
+                :value="old('company_email')" autofocus />
+            <x-input-error-js id="company_emailErr"></x-input-error-js>
+            <x-input-error :messages="$errors->get('company_email')" class="mt-2" />
+        </div>
+
+        <!-- Website -->
+        <div class="mt-4">
+            <x-input-label for="website" :value="__('Website')" />
+            <x-text-input id="website" class="block mt-1 w-full" type="text" name="website" :value="old('website')"
                 autofocus />
-            <x-input-error-js id="diplomaErr"></x-input-error-js>
-            <x-input-error :messages="$errors->get('diploma')" class="mt-2" />
+            <x-input-error-js id="websiteErr"></x-input-error-js>
+            <x-input-error :messages="$errors->get('website')" class="mt-2" />
         </div>
 
         <!-- Phone number -->
@@ -29,22 +38,16 @@
             <x-input-error :messages="$errors->get('phone')" class="mt-2" />
         </div>
 
+
         <div class="mt-4">
-            <x-input-label for="speciality" :value="__('Speciality')" />
-            <x-select-input id="speciality" class="block mt-1 w-full" name="speciality">
-                <option value="" disabled selected hidden>Select your speciality...</option>
-                @unless (count($specialities) == 0)
-                    <div class="grid grid-cols-1 md:grid-cols-2 md:mt-12 lg:grid-cols-3 mt-8 gap-2">
-                        @foreach ($specialities as $speciality)
-                            <option value="{{ $speciality->id }}">{{ $speciality->name }}</option>
-                        @endforeach
-                    </div>
-                @else
-                    <option value="">No specialities found</option>
-                @endunless
+            <x-input-label for="type" :value="__('Organizer Type')" />
+            <x-select-input id="type" class="block mt-1 w-full" name="type">
+                <option value="" disabled selected hidden>Select your type...</option>
+                <option value="nonprofit">Non Profit</option>
+                <option value="company">Company</option>
             </x-select-input>
-            <x-input-error-js id="specialityErr"></x-input-error-js>
-            <x-input-error :messages="$errors->get('speciality')" class="mt-2" />
+            <x-input-error-js id="typeErr"></x-input-error-js>
+            <x-input-error :messages="$errors->get('type')" class="mt-2" />
         </div>
 
 

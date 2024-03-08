@@ -2,12 +2,14 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\ProfileUpdateRequest;
-use Illuminate\Http\RedirectResponse;
+use App\Models\Client;
+use App\Models\Organizer;
+use Illuminate\View\View;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Redirect;
-use Illuminate\View\View;
+use App\Http\Requests\ProfileUpdateRequest;
 
 class ProfileController extends Controller
 {
@@ -16,8 +18,26 @@ class ProfileController extends Controller
      */
     public function edit(Request $request): View
     {
+        $user = $request->user();
+
+        if ($user->hasRole('client')) {
+            $client = Client::where('user_id', $user->id)->first();
+            return view('profile.edit', [
+                'user' => $user,
+                'client' => $client,
+            ]);
+        }
+
+        if ($user->hasRole('organizer')) {
+            $organizer = Organizer::where('user_id', $user->id)->first();
+            return view('profile.edit', [
+                'user' => $user,
+                'organizer' => $organizer,
+            ]);
+        }
+
         return view('profile.edit', [
-            'user' => $request->user(),
+            'user' => $user,
         ]);
     }
 
@@ -34,7 +54,10 @@ class ProfileController extends Controller
 
         $request->user()->save();
 
-        return Redirect::route('profile.edit')->with('status', 'profile-updated');
+        return Redirect::route('profile.edit')->with([
+            'message' => 'Account information updated successfully',
+            'operationSuccessful' => true,
+        ]);
     }
 
     /**

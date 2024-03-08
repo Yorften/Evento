@@ -11,8 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('events', function (Blueprint $table) {
-            $table->boolean('rejected')->default(false);
+        Schema::create('client_event', function (Blueprint $table) {
+            $table->foreignId('client_id')->constrained()->cascadeOnDelete();
+            $table->foreignId('event_id')->constrained()->cascadeOnDelete();
+            $table->boolean('accepted')->default(false);
+            $table->timestamps();
         });
     }
 
@@ -21,8 +24,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('events', function (Blueprint $table) {
-            $table->dropColumn('rejected');
-        });
+        Schema::dropIfExists('client_event');
     }
 };

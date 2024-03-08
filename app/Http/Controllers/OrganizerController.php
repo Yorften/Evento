@@ -2,7 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Organizer;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use App\Providers\RouteServiceProvider;
+use App\Http\Requests\StoreOrganizerRequest;
+use App\Http\Requests\UpdateOrganizerRequest;
 
 class OrganizerController extends Controller
 {
@@ -25,21 +30,28 @@ class OrganizerController extends Controller
      */
     public function create()
     {
-        //
+        return view('auth.organizer_register');
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(StoreOrganizerRequest $request)
     {
-        //
+
+        $validated = $request->validated();
+
+        $validated['user_id'] = Auth::id();
+
+        Organizer::create($validated);
+
+        return redirect(RouteServiceProvider::HOME);
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(Organizer $organizer)
     {
         //
     }
@@ -47,7 +59,7 @@ class OrganizerController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit(Organizer $organizer)
     {
         //
     }
@@ -55,15 +67,22 @@ class OrganizerController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(UpdateOrganizerRequest $request, Organizer $organizer)
     {
-        //
+        $validated = $request->validated();
+
+        $organizer->update($validated);
+
+        return back()->with([
+            'message' => 'Organization information updated successfully',
+            'operationSuccessful' => true,
+        ]);
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Organizer $organizer)
     {
         //
     }

@@ -18,8 +18,9 @@ return new class extends Migration
             $table->integer('capacity');
             $table->dateTime('date');
             $table->string('location');
-            $table->boolean('verified')->default(false);
             $table->boolean('auto')->default(false);
+            $table->boolean('verified')->default(false);
+            $table->boolean('rejected')->default(false);
             $table->foreignId('category_id')->nullable()->constrained()->onDelete('set null');
             $table->foreignId('organizer_id')->constrained()->cascadeOnDelete();
             $table->timestamp('read_at')->nullable();

@@ -27,13 +27,13 @@ class ClientOrganizerVerification
         if ($user && ($user->hasRole('client') || $user->hasRole('organizer'))) {
             if ($user->hasRole('organizer')) {
                 if (!Organizer::where('user_id', $user->id)->exists()) {
-                    return redirect()->route('register.organizer');
+                    return redirect()->route('organizers.create');
                 }
             }
 
             if ($user->hasRole('client')) {
                 if (!Client::where('user_id', $user->id)->exists()) {
-                    return redirect()->route('register.client');
+                    return redirect()->route('clients.create');
                 }
             }
         }
@@ -41,11 +41,11 @@ class ClientOrganizerVerification
         if ($user && $ban = Ban::where('user_id', $user->id)->where(function ($query) {
             $query->where('ban_expiry', '>', now()->toDateTimeString())
                 ->orWhereNull('ban_expiry');
-        })->orderBy('ban_expiry', 'desc')->get()) {
+        })->orderBy('ban_expiry', 'desc')->exists()) {
             return redirect()->route('login')->with([
                 'message' => $ban->first()->reason,
                 'operationSuccessful' => false,
-            ]);;
+            ]);
         }
 
         return $next($request);

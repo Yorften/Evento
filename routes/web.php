@@ -34,7 +34,8 @@ Route::middleware('account_verification')->group(function () {
 
     Route::middleware('role:organizer')->group(function () {
         Route::get('/organizer/dashboard', [OrganizerController::class, 'stats'])->name('organizer.dashboard');
-        Route::resource('/organizer/events', EventController::class)->except(['create', 'edit']);
+        Route::get('/dashboard/events', [EventController::class, 'organizerIndex'])->name('organizer.events');
+        Route::resource('/organizer/events', EventController::class)->only(['store', 'update', 'destroy']);
         Route::resource('/dashboard/notifications', NotificationController::class)->only('show');
     });
 
@@ -54,8 +55,8 @@ Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-    Route::resource('/dashboard/organizers', OrganizerController::class)->only('update');
-    Route::resource('/dashboard/clients', ClientController::class)->only('update');
+    Route::resource('/profile/organizers', OrganizerController::class)->only('update');
+    Route::resource('/profile/clients', ClientController::class)->only('update');
 });
 
 require __DIR__ . '/auth.php';

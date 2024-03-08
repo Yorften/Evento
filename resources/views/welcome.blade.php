@@ -112,11 +112,11 @@
                                         <div class="flex flex-col md:flex-row gap-4">
                                             @if (!$event->images == null)
                                                 <img src="{{ asset('assets/images/poster.jpg') }}"
-                                                    class="w-full md:w-[25%] h-[80%] inline-block shrink-0 rounded-2xl"
+                                                    class="w-full md:w-[30%] h-full inline-block shrink-0 rounded-2xl"
                                                     alt="">
                                             @else
                                                 <img src="{{ asset('storage/' . $event->image->path) }}"
-                                                    class="w-full md:w-[25%] h-[80%] inline-block shrink-0 rounded-2xl"
+                                                    class="w-full md:w-[30%] h-full inline-block shrink-0 rounded-2xl"
                                                     alt="">
                                             @endif
                                             <div class="flex flex-col justify-between">

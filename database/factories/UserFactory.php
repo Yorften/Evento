@@ -63,7 +63,8 @@ class UserFactory extends Factory
                     'phone' => fake()->phoneNumber(),
                     'company' => fake()->company(),
                     'website' => fake()->domainName(),
-                    'type' => fake()->randomElement(['individual', 'company', 'nonprofit']),
+                    'type' => fake()->randomElement(['company', 'nonprofit']),
+                    'company_email' => fake()->companyEmail(),
                 ]);
             }
         });

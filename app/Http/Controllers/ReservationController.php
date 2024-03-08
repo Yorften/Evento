@@ -27,7 +27,9 @@ class ReservationController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validated = $request->validated();
+
+        dd($validated);
     }
 
     /**

@@ -22,6 +22,12 @@ class EventController extends Controller
         return view('dashboard.admin.events.index', compact('events'));
     }
 
+    public function organizerIndex()
+    {
+        $events = Event::all();
+        return view('dashboard.organizer.events.index', compact('events'));
+    }
+
     public function pending()
     {
         $events = Event::where('verified', false)->get();

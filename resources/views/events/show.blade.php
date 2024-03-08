@@ -27,13 +27,13 @@
                         Phone: {{ $event->organizer->phone }}
                     </p>
                     <p class="text-base leading-relaxed text-gray-500">
-                        Email: {{-- {{ $event->organizer->company_email }} --}}
+                        Email: {{ $event->organizer->company_email }}
                     </p>
                 </div>
                 <!-- Modal footer -->
                 <div class="flex justify-center items-center p-4 md:p-5 border-t border-gray-200 rounded-b">
                     <button data-modal-hide="default-modal" type="button"
-                        class="py-2.5 px-5 ms-3 text-sm font-bold text-gray-200 focus:outline-none bg-fuchsia-700 rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-fuchsia-500 focus:z-10 focus:ring-4 focus:ring-fuchsia-200 ">Cancel</button>
+                        class="py-2.5 px-5 ms-3 text-sm font-bold text-gray-200 focus:outline-none bg-fuchsia-700 rounded-lg border border-gray-200 hover:bg-fuchsia-800 focus:z-10 focus:ring-4 focus:ring-fuchsia-200 ">Cancel</button>
                 </div>
             </div>
         </div>

@@ -24,11 +24,10 @@ class ViewServiceProvider extends ServiceProvider
     public function boot(): void
     {
         View::composer(['layouts.app'],  function ($view) {
-            $organizer = Organizer::where('user_id', Auth::id())->get();
-            if ($organizer->count() !== 0) {
-                $notifications = Notification::where('organizer_id', $organizer->id)->get();
-                // dd($notifications);
-                $view->with('notifications', $notifications);
+            if ($user = Auth::user()) {
+                if ($user->hasRole('organizer') && $notifications = Notification::where('organizer_id', Organizer::where('user_id', $user->id)->first()->id)->get()) {
+                    $view->with('notifications', $notifications);
+                }
             }
         });
     }
