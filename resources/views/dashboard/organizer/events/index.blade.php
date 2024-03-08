@@ -3,7 +3,7 @@
         <div class="flex items-center flex-wrap">
             <ul class="flex items-center">
                 <li class="inline-flex items-center">
-                    <a href="/dashboard" class="hover:text-blue-500">
+                    <a href="/" class="hover:text-blue-500">
                         <svg class="w-5 h-auto fill-current " xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
                             fill="#000000">
                             <path d="M0 0h24v24H0V0z" fill="none" />
@@ -14,16 +14,16 @@
                     <span class="mx-4 h-auto text-gray-400 font-medium">/</span>
                 </li>
                 <li class="inline-flex items-center">
-                    <a href="{{ route('welcome') }}" class="hover:text-blue-500">Home</a>
+                    <a href="{{ route('organizer.dashboard') }}" class="hover:text-blue-500">Dashboard</a>
                     <span class="mx-4 h-auto text-gray-400 font-medium">/</span>
                 </li>
                 <li class="inline-flex items-center">
-                    <a href="{{ route('reservations.index') }}" class="hover:text-blue-500">Reservations</a>
+                    <a href="{{ route('organizer.events') }}" class="hover:text-blue-500">Events</a>
                 </li>
             </ul>
         </div>
         <div class="w-full flex justify-between items-center px-2 mt-4">
-            <p class="text-none text-xl font-semibold indent-4">My reservations</p>
+            <p class="text-none text-xl font-semibold indent-4">Accepted Events</p>
         </div>
 
         <div class="shadow-lg border-t-2 rounded-lg w-full p-2 mt-8">

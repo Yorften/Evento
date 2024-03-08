@@ -23,7 +23,7 @@ class ViewServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        View::composer(['layouts.app'],  function ($view) {
+        View::composer(['layouts.app', 'components.dashboard-layout'],  function ($view) {
             if ($user = Auth::user()) {
                 if ($user->hasRole('organizer') && $notifications = Notification::where('organizer_id', Organizer::where('user_id', $user->id)->first()->id)->get()) {
                     $view->with('notifications', $notifications);

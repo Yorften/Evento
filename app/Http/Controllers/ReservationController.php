@@ -54,9 +54,16 @@ class ReservationController extends Controller
         $validated = $request->validated();
         $event = Event::find($validated['event_id']);
         $client = Client::where('user_id', Auth::id())->first();
-        for ($i = 0; $i < $validated['tickets']; $i++) {
-            $event->clients()->attach($client->id, ['created_at' => now(), 'updated_at' => now()]);
+        if($event->auto){
+            for ($i = 0; $i < $validated['tickets']; $i++) {
+                $event->clients()->attach($client->id, ['created_at' => now(), 'updated_at' => now(), 'accepted' => true]);
+            }
+        }else{
+            for ($i = 0; $i < $validated['tickets']; $i++) {
+                $event->clients()->attach($client->id, ['created_at' => now(), 'updated_at' => now()]);
+            }
         }
+
 
         return back()->with([
             'message' => 'Ticket(s) reserved successfully! Awaiting organizer verification.',

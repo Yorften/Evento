@@ -479,6 +479,33 @@
                                 <hr class="border-[1.2px] rounded-full">
                             </li>
 
+
+                            <li>
+                                <a href="{{ route('events.pending') }}"
+                                    class="relative flex flex-row items-center h-11 focus:outline-none hover:bg-blue-800 text-white-600 hover:text-white-800 border-l-4 border-transparent hover:border-blue-500 pr-6">
+                                    <span class="inline-flex justify-center items-center ml-4">
+                                        <svg xmlns="http://www.w3.org/2000/svg" fill="#ffffff" width="800px"
+                                            height="800px" viewBox="0 0 32 32" class="w-5 h-5" id="icon">
+                                            <defs>
+                                                <style>
+                                                    .cls-1 {
+                                                        fill: none;
+                                                    }
+                                                </style>
+                                            </defs>
+                                            <circle cx="9" cy="16" r="2" />
+                                            <circle cx="23" cy="16" r="2" />
+                                            <circle cx="16" cy="16" r="2" />
+                                            <path
+                                                d="M16,30A14,14,0,1,1,30,16,14.0158,14.0158,0,0,1,16,30ZM16,4A12,12,0,1,0,28,16,12.0137,12.0137,0,0,0,16,4Z"
+                                                transform="translate(0 0)" />
+                                            <rect id="_Transparent_Rectangle_" data-name="&lt;Transparent Rectangle&gt;"
+                                                class="cls-1" width="32" height="32" />
+                                        </svg>
+                                    </span>
+                                    <span class="ml-2 text-sm tracking-wide truncate">Pending Events</span>
+                                </a>
+                            </li>
                             <li>
                                 <a href="{{ route('organizer.events') }}"
                                     class="relative flex flex-row items-center h-11 focus:outline-none hover:bg-blue-800 text-white-600 hover:text-white-800 border-l-4 border-transparent hover:border-blue-500 pr-6">
@@ -507,32 +534,7 @@
                                     <span class="ml-2 text-sm tracking-wide truncate">Events</span>
                                 </a>
                             </li>
-                            <li>
-                                <a href="{{ route('events.pending') }}"
-                                    class="relative flex flex-row items-center h-11 focus:outline-none hover:bg-blue-800 text-white-600 hover:text-white-800 border-l-4 border-transparent hover:border-blue-500 pr-6">
-                                    <span class="inline-flex justify-center items-center ml-4">
-                                        <svg xmlns="http://www.w3.org/2000/svg" fill="#ffffff" width="800px"
-                                            height="800px" viewBox="0 0 32 32" class="w-5 h-5" id="icon">
-                                            <defs>
-                                                <style>
-                                                    .cls-1 {
-                                                        fill: none;
-                                                    }
-                                                </style>
-                                            </defs>
-                                            <circle cx="9" cy="16" r="2" />
-                                            <circle cx="23" cy="16" r="2" />
-                                            <circle cx="16" cy="16" r="2" />
-                                            <path
-                                                d="M16,30A14,14,0,1,1,30,16,14.0158,14.0158,0,0,1,16,30ZM16,4A12,12,0,1,0,28,16,12.0137,12.0137,0,0,0,16,4Z"
-                                                transform="translate(0 0)" />
-                                            <rect id="_Transparent_Rectangle_" data-name="&lt;Transparent Rectangle&gt;"
-                                                class="cls-1" width="32" height="32" />
-                                        </svg>
-                                    </span>
-                                    <span class="ml-2 text-sm tracking-wide truncate">Pending Events</span>
-                                </a>
-                            </li>
+
                             <li>
                                 <a href="{{ route('events.history') }}"
                                     class="relative flex flex-row items-center h-11 focus:outline-none hover:bg-blue-800 text-white-600 hover:text-white-800 border-l-4 border-transparent hover:border-blue-500 pr-6">

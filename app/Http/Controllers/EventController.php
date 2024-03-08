@@ -28,7 +28,7 @@ class EventController extends Controller
     }
 
 
-    public function organizerIndex()
+    public function accepted()
     {
         $events = Event::all();
         return view('dashboard.organizer.events.index', compact('events'));
