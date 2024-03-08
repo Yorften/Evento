@@ -2,11 +2,19 @@
 
 namespace App\Http\Controllers;
 
+use Carbon\Carbon;
 use App\Models\Event;
+use App\Models\Category;
+use App\Models\Organizer;
+use App\Traits\ImageUpload;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use App\Http\Requests\StoreEventRequest;
 
 class EventController extends Controller
 {
+
+    use ImageUpload;
     /**
      * Display a listing of the resource.
      */
@@ -22,28 +30,32 @@ class EventController extends Controller
     */
 
 
-    public function clients()
+    public function clients(Event $event)
     {
-        return view('dashboard.organizer.events.show');
+        $event->load('clients.user');
+        return view('dashboard.organizer.events.show', compact('event'));
     }
 
 
     public function accepted()
     {
-        $events = Event::all();
+        $now = Carbon::now()->toDateTimeString();
+        $events = Event::where('verified', true)->where('date', '>', $now)->orderBy('date')->get();
         return view('dashboard.organizer.events.index', compact('events'));
     }
 
     public function pending()
     {
-        $events = Event::where('verified', false)->get();
-        return view('dashboard.organizer.events.pending', compact('events'));
+        $now = Carbon::now()->toDateTimeString();
+        $events = Event::where('verified', false)->where('date', '>', $now)->orderBy('date')->get();
+        $categories = Category::all();
+        return view('dashboard.organizer.events.pending', compact('events', 'categories'));
     }
 
     public function history()
     {
-        $events = Event::paginate(6);
-        return view('dashboard.organizer.events.history');
+        $events = Event::where('verified', true)->orderBy('date')->get();
+        return view('dashboard.organizer.events.history', compact('events'));
     }
 
     /*
@@ -79,9 +91,22 @@ class EventController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(StoreEventRequest $request)
     {
-        //
+        $validated = $request->validated();
+        $organizer = Organizer::where('user_id', Auth::id())->first();
+        $validated['organizer_id'] = $organizer->id;
+        $validated['date'] = date('Y-m-d H:i:s', strtotime($validated['date']));
+        $event = Event::create($validated);
+
+        if ($request->hasFile('image')) {
+            $this->storeImg($request->file('image'), $event);
+        }
+
+        return back()->with([
+            'message' => 'Event created successfully!',
+            'operationSuccessful' => true,
+        ]);
     }
 
 
@@ -100,7 +125,15 @@ class EventController extends Controller
      */
     public function update(Request $request, Event $event)
     {
-        //
+        if ($request->hasFile('image')) {
+            $this->storeImg($request->file('image'), $event);
+            $this->upadateImg($request->file('image'), $event);
+        }
+
+        return back()->with([
+            'message' => 'Event updated successfully!',
+            'operationSuccessful' => true,
+        ]);
     }
 
     /**
