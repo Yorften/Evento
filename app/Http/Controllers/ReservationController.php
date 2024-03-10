@@ -18,7 +18,7 @@ class ReservationController extends Controller
     {
         $now = Carbon::now()->toDateTimeString();
         $client = Client::where('user_id', Auth::id())->first();
-        $events = $client->events()->where('date', '>', $now)->wherePivot('accepted', true)->withPivot('created_at')->get();
+        $events = $client->events()->where('date', '>', $now)->wherePivot('verified', true)->withPivot('created_at', 'group')->get();
         return view('dashboard.client.reservations.index', compact('events'));
     }
 
@@ -26,7 +26,7 @@ class ReservationController extends Controller
     {
         $now = Carbon::now()->toDateTimeString();
         $client = Client::where('user_id', Auth::id())->first();
-        $events = $client->events()->where('date', '<', $now)->wherePivot('accepted', true)->withPivot('created_at')->get();
+        $events = $client->events()->where('date', '<', $now)->wherePivot('verified', true)->withPivot('created_at')->get();
         return view('dashboard.client.reservations.history', compact('events'));
     }
 
@@ -34,16 +34,8 @@ class ReservationController extends Controller
     {
         $now = Carbon::now()->toDateTimeString();
         $client = Client::where('user_id', Auth::id())->first();
-        $events = $client->events()->where('date', '>', $now)->wherePivot('accepted', false)->withPivot('created_at')->get();
+        $events = $client->events()->where('date', '>', $now)->wherePivot('verified', null)->withPivot('created_at')->get();
         return view('dashboard.client.reservations.pending', compact('events'));
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
     }
 
     /**
@@ -53,44 +45,52 @@ class ReservationController extends Controller
     {
         $validated = $request->validated();
         $event = Event::find($validated['event_id']);
-        $client = Client::where('user_id', Auth::id())->first();
-        if($event->auto){
-            for ($i = 0; $i < $validated['tickets']; $i++) {
-                $event->clients()->attach($client->id, ['created_at' => now(), 'updated_at' => now(), 'accepted' => true]);
-            }
-        }else{
-            for ($i = 0; $i < $validated['tickets']; $i++) {
-                $event->clients()->attach($client->id, ['created_at' => now(), 'updated_at' => now()]);
-            }
+
+        if ($validated['tickets'] > $event->capacity) {
+            return back()->with([
+                'message' => 'The number of tickets you\'re trying to reserve exceeds the available capacity.',
+                'operationSuccessful' => false,
+            ]);
         }
 
+        $client = Client::where('user_id', Auth::id())->first();
+        $ticket_group = 'group_' . uniqid() . '_' . bin2hex(random_bytes(8));
+        if ($event->auto) {
+            for ($i = 0; $i < $validated['tickets']; $i++) {
+                $event->clients()->attach($client->id, ['group' => $ticket_group, 'created_at' => now(), 'updated_at' => now(), 'verified' => true]);
+            }
 
-        return back()->with([
-            'message' => 'Ticket(s) reserved successfully! Awaiting organizer verification.',
-            'operationSuccessful' => true,
-        ]);
+            return back()->with([
+                'message' => 'Ticket(s) reserved successfully! You can view your tickets in your dashboard.',
+                'operationSuccessful' => true,
+            ]);
+        } else {
+            for ($i = 0; $i < $validated['tickets']; $i++) {
+                $event->clients()->attach($client->id, ['group' => $ticket_group, 'created_at' => now(), 'updated_at' => now()]);
+            }
+
+            return back()->with([
+                'message' => 'Ticket(s) reserved successfully! Awaiting organizer verification.',
+                'operationSuccessful' => true,
+            ]);
+        }
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show($group)
     {
-        //
+        $client = Client::where('user_id', Auth::id())->first();
+        $event = $client->events()->wherePivot('group', $group)->withPivot('group')->first();
+        return view('ticket.view', compact('event'));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        //
-    }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request,)
     {
         //
     }
@@ -98,7 +98,7 @@ class ReservationController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy()
     {
         //
     }

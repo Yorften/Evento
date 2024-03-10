@@ -30,8 +30,10 @@ class EventFactory extends Factory
             'category_id' => $category_id,
             'title' => fake()->sentence(7, false),
             'description' => fake()->text(1000),
-            'capacity' => fake()->numberBetween(200, 2000),
-            'date' => fake()->dateTimeBetween('now', '+1 week'),
+            'capacity' => fake()->numberBetween(50, 200),
+            'verified' => true,
+            'auto' => true,
+            'date' => fake()->dateTimeInInterval('+2 week', '+1 week'),
             'location' => fake()->city(),
         ];
     }

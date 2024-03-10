@@ -31,7 +31,8 @@ Route::middleware('account_verification')->group(function () {
     Route::middleware('role:client')->group(function () {
         Route::get('/reservations/pending', [ReservationController::class, 'pending'])->name('reservations.pending');
         Route::get('/reservations/history', [ReservationController::class, 'history'])->name('reservations.history');
-        Route::resource('reservations', ReservationController::class)->only(['index', 'show', 'store']);
+        Route::resource('reservations', ReservationController::class)->only(['index', 'store']);
+        Route::get('reservations/{group}', [ReservationController::class, 'show'])->name('reservations.show');
     });
 
     Route::middleware('role:organizer')->group(function () {
@@ -39,6 +40,7 @@ Route::middleware('account_verification')->group(function () {
         Route::get('/organizer/dashboard/events', [EventController::class, 'accepted'])->name('organizer.events');
         Route::get('/organizer/dashboard/events/pending', [EventController::class, 'pending'])->name('events.pending');
         Route::get('/organizer/dashboard/events/history', [EventController::class, 'history'])->name('events.history');
+        Route::get('/organizer/dashboard/events/rejected', [EventController::class, 'rejected'])->name('events.rejected');
         Route::get('/organizer/dashboard/events/{event}', [EventController::class, 'clients'])->name('organizer.clients');
         Route::resource('/organizer/dashboard/events', EventController::class)->only(['store', 'update', 'destroy']);
         Route::resource('/dashboard/notifications', NotificationController::class)->only('show');

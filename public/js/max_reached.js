@@ -1,12 +1,14 @@
 window.addEventListener("DOMContentLoaded", () => {
     let form = document.getElementById("event_form");
+    let max = document
+        .getElementById("quantity-input")
+        .getAttribute("data-input-counter-max");
     const incButton = document.getElementById("increment-button");
     const decButton = document.getElementById("decrement-button");
     let ticketsElement = document.getElementById("quantity-input");
     let ticketElement = document.getElementById("number");
     let priceElement = document.getElementById("price");
     let price = 0;
-
     form.addEventListener("submit", (event) => {
         let tickets = ticketsElement.value;
         if (tickets == 0) {
@@ -16,7 +18,7 @@ window.addEventListener("DOMContentLoaded", () => {
 
     incButton.addEventListener("click", () => {
         let tickets = ticketsElement.value;
-        if (tickets == 20) {
+        if (tickets == max) {
             Swal.fire({
                 title: "Error",
                 icon: "error",

@@ -9,6 +9,7 @@ use App\Models\Organizer;
 use App\Traits\ImageUpload;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 use App\Http\Requests\StoreEventRequest;
 
 class EventController extends Controller
@@ -20,8 +21,12 @@ class EventController extends Controller
      */
     public function index()
     {
-        $events = Event::paginate(6);
-        return view('events.index', compact('events'));
+        $now = Carbon::now()->toDateTimeString();
+        // change back to true later;
+        $events = Event::with('organizer.user', 'category')->where('verified', null)->where('date', '>', $now)->orderBy('date')->filter(request(['category', 'title']))->paginate(6);
+        $category_filter = request()->input('category');
+        $categories = Category::all();
+        return view('events.index', compact('events', 'categories', 'category_filter'));
     }
 
     /*
@@ -39,22 +44,34 @@ class EventController extends Controller
 
     public function accepted()
     {
+        $organizer = Organizer::where('user_id', Auth::id())->first();
         $now = Carbon::now()->toDateTimeString();
-        $events = Event::where('verified', true)->where('date', '>', $now)->orderBy('date')->get();
+        $events = Event::where('organizer_id', $organizer->id)->where('verified', true)->where('date', '>', $now)->orderBy('date')->get();
         return view('dashboard.organizer.events.index', compact('events'));
     }
 
     public function pending()
     {
+        $organizer = Organizer::where('user_id', Auth::id())->first();
         $now = Carbon::now()->toDateTimeString();
-        $events = Event::where('verified', false)->where('date', '>', $now)->orderBy('date')->get();
+        $events = Event::where('organizer_id', $organizer->id)->where('verified', null)->where('date', '>', $now)->orderBy('date')->get();
         $categories = Category::all();
         return view('dashboard.organizer.events.pending', compact('events', 'categories'));
     }
 
+    public function rejected()
+    {   
+        $organizer = Organizer::where('user_id', Auth::id())->first();
+        $now = Carbon::now()->toDateTimeString();
+        $events = Event::where('organizer_id', $organizer->id)->where('verified', false)->where('date', '>', $now)->orderBy('date')->get();
+        $categories = Category::all();
+        return view('dashboard.organizer.events.rejected', compact('events', 'categories'));
+    }
+
     public function history()
     {
-        $events = Event::where('verified', true)->orderBy('date')->get();
+        $organizer = Organizer::where('user_id', Auth::id())->first();
+        $events = Event::where('organizer_id', $organizer->id)->where('verified', true)->orderBy('date')->get();
         return view('dashboard.organizer.events.history', compact('events'));
     }
 
@@ -71,7 +88,8 @@ class EventController extends Controller
 
     public function adminIndex()
     {
-        $events = Event::all();
+        $now = Carbon::now()->toDateTimeString();
+        $events = Event::where('verified', null)->where('date', '>', $now)->orderBy('date')->get();
         return view('dashboard.admin.events.index', compact('events'));
     }
 
@@ -82,7 +100,8 @@ class EventController extends Controller
 
     public function latest()
     {
-        $events = Event::where('date', '>', now()->toDateTimeString())->orderBy('date')->get();
+        // change to true
+        $events = Event::where('verified', true)->where('date', '>', now()->toDateTimeString())->orderBy('date')->get();
         return view('welcome', compact('events'));
     }
 
@@ -97,6 +116,13 @@ class EventController extends Controller
         $organizer = Organizer::where('user_id', Auth::id())->first();
         $validated['organizer_id'] = $organizer->id;
         $validated['date'] = date('Y-m-d H:i:s', strtotime($validated['date']));
+        $week = Carbon::now()->addDays(15)->toDateTimeString();
+        if ($week > $validated['date']) {
+            return back()->with([
+                'message' => 'The start date of the event must be at least 15 days from today\'s date. Please choose a later date.',
+                'operationSuccessful' => false,
+            ]);
+        }
         $event = Event::create($validated);
 
         if ($request->hasFile('image')) {
@@ -104,7 +130,7 @@ class EventController extends Controller
         }
 
         return back()->with([
-            'message' => 'Event created successfully!',
+            'message' => 'Event created successfully. You can check your event status in your pending events in the dashboard',
             'operationSuccessful' => true,
         ]);
     }
@@ -141,7 +167,13 @@ class EventController extends Controller
      */
     public function destroy(Event $event)
     {
+        if ($event->image) {
+            Storage::delete('public/' . $event->image->path);
+            $event->image->delete();
+        }
+    
         $event->delete();
+    
         return back()->with([
             'message' => 'Event deleted successfully!',
             'operationSuccessful' => true,

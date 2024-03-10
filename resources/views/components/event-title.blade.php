@@ -6,11 +6,11 @@
     </div>
     <div class="flex flex-col h-full justify-between">
         <p class="text-xl font-semibold">{{ $event->title }} - {{ $event->location }},
-            {{ $event->date->format('l') }},
+            {{ $event->date->format('l d') }},
             {{ $event->date->format('m M') }}, {{ $event->date->format('Y ') }}
             at {{ $event->date->format('H:i') }} </p>
         <p class="text-sm text-gray-700">{{ $event->location }} • Starts on
-            {{ $event->date->format('l') }}, {{ $event->date->format('m M') }},
+            {{ $event->date->format('l d') }}, {{ $event->date->format('m M') }},
             {{ $event->date->format('Y ') }}
             at {{ $event->date->format('H:i') }}
         </p>

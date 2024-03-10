@@ -99,13 +99,17 @@
                                     <x-dropdown-link :href="route('reservations.index')">
                                         {{ __('Reservations') }}
                                     </x-dropdown-link>
+                                    <x-dropdown-button data-modal-toggle="notifications-modal"
+                                        data-modal-target="notifications-modal" :count="$notifications->where('read_at', null)->count()">
+                                        {{ __('Notifications') }}
+                                    </x-dropdown-button>
                                 @endhasrole
                                 @hasrole('organizer')
                                     <x-dropdown-link :href="route('organizer.dashboard')">
                                         {{ __('Dashboard') }}
                                     </x-dropdown-link>
                                     <x-dropdown-button data-modal-toggle="notifications-modal"
-                                        data-modal-target="notifications-modal" :count="$notifications->where('read_at', null)->count()">
+                                        data-modal-target="notifications-modal" :count="$org_notifications->where('read_at', null)->count()">
                                         {{ __('Notifications') }}
                                     </x-dropdown-button>
                                 @endhasrole

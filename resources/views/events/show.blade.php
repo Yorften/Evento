@@ -1,3 +1,6 @@
+@php
+    $places = $event->capacity - ($event->clients ? $event->clients->count() : 0);
+@endphp
 <x-app-layout>
     <!-- Main modal -->
     <div id="default-modal" tabindex="-1" aria-hidden="true"
@@ -96,9 +99,13 @@
                     class="flex flex-col items-center w-full">
                     @csrf
                     <input type="hidden" name="event_id" value="{{ $event->id }}">
+                    <div class="flex px-2 w-full items-center justify-between mt-6">
+                        <p class="font-medium text-gray-600">Places left: {{ $places }}</p>
+
+                    </div>
                     <div class="flex px-2 w-full items-center justify-between my-6">
                         <p class="font-medium text-gray-600">Normal - 250 MAD</p>
-                        <x-ticket-counter :max="$event->capacity - ($event->clients ? $event->clients->count() : 0)" />
+                        <x-ticket-counter :max="$places" />
                     </div>
                     <div class="w-11/12">
                         <p class=" border-b-[1.5px] border-gray-300 my-4"></p>
@@ -114,7 +121,7 @@
                     <a data-modal-toggle="default-modal" data-modal-target="default-modal"
                         class="cursor-pointer hover:underline text-gray-600">Contact</a>
                     <p class="text-gray-700 font-medium mt-8">Date and time:</p>
-                    <p>{{ $event->date->format('l') }}, {{ $event->date->format('m M') }},
+                    <p>{{ $event->date->format('l d') }}, {{ $event->date->format('m M') }},
                         {{ $event->date->format('Y ') }}
                         at {{ $event->date->format('H:i') }}</p>
 

@@ -13,8 +13,9 @@ return new class extends Migration
     {
         Schema::create('notifications', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('organizer_id')->constrained()->cascadeOnDelete();
-            $table->enum('type', ['approved', 'rejected']);
+            $table->foreignId('client_id')->constrained()->cascadeOnDelete();
+            $table->string('group');
+            $table->text('reason');
             $table->timestamp('read_at');
             $table->timestamps();
         });

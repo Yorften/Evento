@@ -13,6 +13,7 @@ class Event extends Model
     protected $casts = [
         'date' => 'datetime',
     ];
+    
 
     public function image(): MorphOne
     {
@@ -32,5 +33,19 @@ class Event extends Model
     public function clients()
     {
         return $this->belongsToMany(Client::class);
+    }
+
+    public function scopeFilter($query, array $filters)
+    {
+        if ($filters['category'] ?? false) {
+            if ($filters['category'] == 'all') {
+            } else {
+                $query->where('category_id', $filters['category']);
+            }
+        }
+
+        if ($filters['title'] ?? false) {
+            $query->where('title', 'like', '%' . $filters['title'] . '%');
+        }
     }
 }

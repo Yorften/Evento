@@ -18,7 +18,8 @@ class DatabaseSeeder extends Seeder
     {
         $this->call(RoleSeeder::class);
         $this->call(AdminSeeder::class);
-        Category::factory(20)->create();
+        $this->call(CategorySeeder::class);
+        // Category::factory(20)->create();
         User::factory(20)->withRole('organizer')->create();
         User::factory(50)->withRole('client')->create();
         Event::factory(20)->withImage()->create();

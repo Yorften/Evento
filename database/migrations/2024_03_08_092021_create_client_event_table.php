@@ -14,7 +14,8 @@ return new class extends Migration
         Schema::create('client_event', function (Blueprint $table) {
             $table->foreignId('client_id')->constrained()->cascadeOnDelete();
             $table->foreignId('event_id')->constrained()->cascadeOnDelete();
-            $table->boolean('accepted')->default(false);
+            $table->string('group');
+            $table->boolean('verified')->nullable();
             $table->timestamps();
         });
     }

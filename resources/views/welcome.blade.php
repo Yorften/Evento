@@ -75,7 +75,7 @@
         });
     @endphp
 
-    <div class="w-11/12 ml-9 flex flex-col items-start justify-start my-14 text-gray-900">
+    <div class="w-11/12 ml-9 flex flex-col items-start justify-start my-24 text-gray-900">
         <p class="text-5xl font-semibold my-4">Upcoming Events</p>
         @unless (count($eventsByDate) == 0)
             <div class="mb-4 border-b border-gray-200">
@@ -126,9 +126,15 @@
                                                             class="text-3xl hover:text-purple-600 font-semibold">{{ $event->title }}
                                                         </a>
                                                         <div class="flex items-center gap-1">
-                                                            <p
-                                                                class="capitalize cursor-default text-sm p-1 rounded-xl border border-gray-500 text-gray-500">
-                                                                {{ $event->category->name }}</p>
+                                                            @if ($event->category == null)
+                                                                <p
+                                                                    class="capitalize cursor-default text-sm p-1 rounded-xl border border-gray-500 text-gray-500">
+                                                                    {{ $event->category->name }}</p>
+                                                            @else
+                                                                <p
+                                                                    class="capitalize cursor-default text-sm p-1 rounded-xl border border-gray-500 text-gray-500">
+                                                                    {{ $event->category->name }}</p>
+                                                            @endif
                                                         </div>
                                                     </div>
                                                 </div>
@@ -143,7 +149,7 @@
                                                     <div class="flex items-center gap-1">
                                                         <p
                                                             class="capitalize cursor-default font-semibold text-sm p-1 px-2 rounded-xl border bg-purple-600 border-purple-500 text-gray-200">
-                                                            {{ $event->date->format('D-m-Y H:i') }}</p>
+                                                            {{ $event->date->format('d-m-Y H:i') }}</p>
                                                     </div>
                                                 </div>
                                             </div>

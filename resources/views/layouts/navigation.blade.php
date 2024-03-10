@@ -75,13 +75,17 @@
                                 <x-dropdown-link :href="route('reservations.index')">
                                     {{ __('Reservations') }}
                                 </x-dropdown-link>
+                                <x-dropdown-button data-modal-toggle="notifications-modal"
+                                    data-modal-target="notifications-modal" :count="$notifications->where('read_at', null)->count()">
+                                    {{ __('Notifications') }}
+                                </x-dropdown-button>
                             @endhasrole
                             @hasrole('organizer')
                                 <x-dropdown-link :href="route('organizer.dashboard')">
                                     {{ __('Dashboard') }}
                                 </x-dropdown-link>
                                 <x-dropdown-button data-modal-toggle="notifications-modal"
-                                    data-modal-target="notifications-modal" :count="$notifications->where('read_at', null)->count()">
+                                    data-modal-target="notifications-modal" :count="$org_notifications->where('read_at', null)->count()">
                                     {{ __('Notifications') }}
                                 </x-dropdown-button>
                             @endhasrole
@@ -170,11 +174,6 @@
                     <x-responsive-nav-link :href="route('profile.edit')">
                         {{ __('Profile') }}
                     </x-responsive-nav-link>
-                    @hasrole('member')
-                        <x-responsive-nav-link :href="route('reservation.index')">
-                            {{ __('Reservations') }}
-                        </x-responsive-nav-link>
-                    @endhasrole
 
                     <!-- Authentication -->
                     <form method="POST" action="{{ route('logout') }}">
