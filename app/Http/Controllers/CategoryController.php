@@ -12,7 +12,8 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        //
+        $categories = Category::all();
+        return view('dashboard.admin.categories.index', compact('categories'));
     }
 
     /**
@@ -20,7 +21,22 @@ class CategoryController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validated = $request->validate([
+            'name' => 'required',
+        ]);
+
+        if (Category::where('name', $validated['name'])->exists()) {
+            return back()->with([
+                'message' => 'Another category name already exists with this name.',
+                'operationSuccessful' => false,
+            ]);
+        }
+
+        Category::create($validated);
+        return back()->with([
+            'message' => 'Category created successfully!',
+            'operationSuccessful' => true,
+        ]);
     }
 
 
@@ -29,7 +45,23 @@ class CategoryController extends Controller
      */
     public function update(Request $request, Category $category)
     {
-        //
+        $validated = $request->validate([
+            'name' => 'required',
+        ]);
+
+        if (Category::where('name', $validated['name'])->where('id', '!=', $category->id)->exists()) {
+            return back()->with([
+                'message' => 'Another category name already exists with this name.',
+                'operationSuccessful' => false,
+            ]);
+        }
+
+        $category->update($validated);
+        
+        return back()->with([
+            'message' => 'Category updated successfully!',
+            'operationSuccessful' => true,
+        ]);
     }
 
     /**
@@ -37,6 +69,10 @@ class CategoryController extends Controller
      */
     public function destroy(Category $category)
     {
-        //
+        $category->delete();
+        return back()->with([
+            'message' => 'Category deleted successfully!',
+            'operationSuccessful' => true,
+        ]);
     }
 }
