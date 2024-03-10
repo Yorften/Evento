@@ -30,7 +30,7 @@ class ViewServiceProvider extends ServiceProvider
                 if ($user->hasRole('client') && $notifications = Notification::where('client_id', Client::where('user_id', $user->id)->first()->id)->get()) {
                     $view->with('notifications', $notifications);
                 }
-                if ($user->hasRole('organizer') && $org_notifications = Event::where('verified', false)->where('organizer_id', Organizer::where('user_id', $user->id)->first()->id)->get()) {
+                if ($user->hasRole('organizer') && $org_notifications = Event::where('verified', true)->where('verified', false)->where('organizer_id', Organizer::where('user_id', $user->id)->first()->id)->get()) {
                     $view->with('org_notifications', $org_notifications);
                 }
             }

@@ -46,7 +46,7 @@ class User extends Authenticatable
 
     public function bans()
     {
-        return $this->belongsToMany(Ban::class);
+        return $this->hasMany(Ban::class);
     }
 
     public function clients()

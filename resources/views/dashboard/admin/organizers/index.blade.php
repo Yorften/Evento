@@ -18,32 +18,32 @@
                     <span class="mx-4 h-auto text-gray-400 font-medium">/</span>
                 </li>
                 <li class="inline-flex items-center">
-                    <a href="{{ route('categories.index') }}" class="hover:text-blue-500">Categories</a>
+                    <a href="{{ route('organizers.index') }}" class="hover:text-blue-500">Organizers</a>
                 </li>
             </ul>
         </div>
         <div class="w-full flex justify-between items-center px-2 mt-4">
-            <p class="text-none text-xl font-semibold indent-4">My reservations</p>
+            <p class="text-none text-xl font-semibold indent-4">All Organizers</p>
         </div>
 
         <div class="shadow-lg border-t-2 rounded-lg w-full p-2 mt-8">
-            
+
         </div>
     </div>
     @push('scripts')
-    <script>
-        $(document).ready(function() {
-            var table = $('#table').DataTable({
-                    responsive: true,
-                    pageLength: 5,
-                    lengthMenu: [
-                        [5],
-                        [5]
-                    ]
-                })
-                .columns.adjust()
-                .responsive.recalc();
-        });
-    </script>
-@endpush
+        <script>
+            $(document).ready(function() {
+                var table = $('#table').DataTable({
+                        responsive: true,
+                        pageLength: 5,
+                        lengthMenu: [
+                            [5],
+                            [5]
+                        ]
+                    })
+                    .columns.adjust()
+                    .responsive.recalc();
+            });
+        </script>
+    @endpush
 </x-dashboard-layout>

@@ -81,7 +81,7 @@
                         class="w-full h-[25vh] md:w-[90vw] md:h-[60vh] object-cover inline-block rounded-lg"
                         alt="">
                 @endif
-                <div class="p-4 border-2 border-gray-300 rounded-md shadow-sm">
+                <div class="w-full p-4 border-2 border-gray-300 rounded-md shadow-sm">
                     <p class="text-lg font-medium my-4">About this event</p>
                     <p class="text-lg font-normal text-left">{{ $event->description }}</p>
                 </div>

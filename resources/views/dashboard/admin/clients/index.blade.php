@@ -18,12 +18,12 @@
                     <span class="mx-4 h-auto text-gray-400 font-medium">/</span>
                 </li>
                 <li class="inline-flex items-center">
-                    <a href="{{ route('categories.index') }}" class="hover:text-blue-500">Categories</a>
+                    <a href="{{ route('clients.index') }}" class="hover:text-blue-500">Clients</a>
                 </li>
             </ul>
         </div>
         <div class="w-full flex justify-between items-center px-2 mt-4">
-            <p class="text-none text-xl font-semibold indent-4">My reservations</p>
+            <p class="text-none text-xl font-semibold indent-4">All Clients</p>
         </div>
 
         <div class="shadow-lg border-t-2 rounded-lg w-full p-2 mt-8">

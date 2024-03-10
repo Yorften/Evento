@@ -18,6 +18,7 @@ class EventController extends Controller
 {
 
     use ImageUpload;
+
     /**
      * Display a listing of the resource.
      */
@@ -31,11 +32,78 @@ class EventController extends Controller
         return view('events.index', compact('events', 'categories', 'category_filter'));
     }
 
+    /**
+     * Display the specified resource.
+     */
+    public function show(Event $event)
+    {
+        if ($event->verified) {
+            $event->load('category', 'organizer.user', 'clients');
+            return view('events.show', compact('event'));
+        }
+        return abort('404');
+    }
+
+
     /*
     **
     ** Organizer functions
     */
 
+    /**
+     * Update the specified resource in storage.
+     */
+    public function update(UpdateEventRequest $request, Event $event)
+    {
+        $validated = $request->validated();
+        if (count($validated) == 1) {
+            $event->update($validated);
+            if ($validated['auto'] == 1) {
+                event(new EventModeUpdated($event));
+                return back()->with([
+                    'message' => 'Mode updated successfully to automatic. Any previous pending reservations will be accepted by date.',
+                    'operationSuccessful' => true,
+                ]);
+            }
+            return back()->with([
+                'message' => 'Mode updated successfully to manual.',
+                'operationSuccessful' => true,
+            ]);
+        }
+        
+        $validated['read_at'] = null;
+        $validated['verified'] = null;
+
+        $event->update($validated);
+
+        if ($request->hasFile('image')) {
+            $this->storeImg($request->file('image'), $event);
+            $this->upadateImg($request->file('image'), $event);
+        }
+
+        return back()->with([
+            'message' => 'Event updated successfully!',
+            'operationSuccessful' => true,
+        ]);
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     */
+    public function destroy(Event $event)
+    {
+        if ($event->image) {
+            Storage::delete('public/' . $event->image->path);
+            $event->image->delete();
+        }
+
+        $event->delete();
+
+        return back()->with([
+            'message' => 'Event deleted successfully!',
+            'operationSuccessful' => true,
+        ]);
+    }
 
     public function clients(Event $event)
     {
@@ -99,6 +167,45 @@ class EventController extends Controller
         return view('dashboard.admin.events.index', compact('events'));
     }
 
+    public function verify(Event $event)
+    {
+        $event->update([
+            'verified' => true,
+            'read_at' => null,
+        ]);
+        return back()->with([
+            'message' => 'Event approved succsessfully!',
+            'operationSuccessful' => true,
+        ]);
+    }
+
+
+    public function reject(Request $request, Event $event)
+    {
+        $validated = $request->validate([
+            'reason' => 'required',
+        ]);
+        $event->update([
+            'verified' => false,
+            'reason' => $validated['reason'],
+            'read_at' => null,
+        ]);
+        return back()->with([
+            'message' => 'Event rejected succsessfully! The orgnizer will be notified with this change.',
+            'operationSuccessful' => true,
+        ]);
+    }
+
+
+    public function preview(Event $event)
+    {
+        if ($event->verified == null) {
+            $event->load('category', 'organizer.user', 'clients');
+            return view('events.show', compact('event'));
+        }
+        return abort('404');
+    }
+
     /*
     **
     ** 
@@ -137,71 +244,6 @@ class EventController extends Controller
 
         return back()->with([
             'message' => 'Event created successfully. You can check your event status in your pending events in the dashboard',
-            'operationSuccessful' => true,
-        ]);
-    }
-
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(Event $event)
-    {
-        if ($event->verified) {
-            $event->load('category', 'organizer.user', 'clients');
-            return view('events.show', compact('event'));
-        }
-        return abort('404');
-    }
-
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(UpdateEventRequest $request, Event $event)
-    {
-        $validated = $request->validated();
-        if (count($validated) == 1) {
-            $event->update($validated);
-            if ($validated['auto'] == 1) {
-                event(new EventModeUpdated($event));
-                return back()->with([
-                    'message' => 'Mode updated successfully to automatic. Any previous pending reservations will be accepted by date.',
-                    'operationSuccessful' => true,
-                ]);
-            }
-            return back()->with([
-                'message' => 'Mode updated successfully to manual.',
-                'operationSuccessful' => true,
-            ]);
-        }
-        $event->update($validated);
-
-        if ($request->hasFile('image')) {
-            $this->storeImg($request->file('image'), $event);
-            $this->upadateImg($request->file('image'), $event);
-        }
-
-        return back()->with([
-            'message' => 'Event updated successfully!',
-            'operationSuccessful' => true,
-        ]);
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Event $event)
-    {
-        if ($event->image) {
-            Storage::delete('public/' . $event->image->path);
-            $event->image->delete();
-        }
-
-        $event->delete();
-
-        return back()->with([
-            'message' => 'Event deleted successfully!',
             'operationSuccessful' => true,
         ]);
     }

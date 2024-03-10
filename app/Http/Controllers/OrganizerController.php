@@ -16,7 +16,9 @@ class OrganizerController extends Controller
      */
     public function index()
     {
-        //
+        $organizers = Organizer::all();
+        $organizers->load('user.bans');
+        return view('dashboard.admin.organizers.index', compact('organizers'));
     }
 
 

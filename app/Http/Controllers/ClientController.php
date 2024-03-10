@@ -16,7 +16,9 @@ class ClientController extends Controller
      */
     public function index()
     {
-        //
+        $clients = Client::all();
+        $clients->load('user.bans');
+        return view('dashboard.admin.clients.index', compact('clients'));
     }
 
     /**
