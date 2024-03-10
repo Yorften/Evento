@@ -39,8 +39,9 @@ class EventController extends Controller
 
     public function clients(Event $event)
     {
+
         $event->load('clients.user');
-        $clients = $event->clients()->with('user')->wherePivot('verified', true)->orWherePivot('verified', null)->withPivot('verified', 'group')->get();
+        $clients = $event->clients()->with('user')->wherePivot('verified', true)->orWherePivotNull('verified')->withPivot('verified', 'group')->wherePivot('event_id', $event->id)->get();
         return view('dashboard.organizer.events.clients', compact('clients', 'event'));
     }
 
