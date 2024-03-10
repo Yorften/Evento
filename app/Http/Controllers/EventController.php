@@ -40,7 +40,8 @@ class EventController extends Controller
     public function clients(Event $event)
     {
         $event->load('clients.user');
-        return view('dashboard.organizer.events.show', compact('event'));
+        $clients = $event->clients()->with('user')->wherePivot('verified', true)->orWherePivot('verified', null)->withPivot('verified', 'group')->get();
+        return view('dashboard.organizer.events.clients', compact('clients', 'event'));
     }
 
 
@@ -145,8 +146,11 @@ class EventController extends Controller
      */
     public function show(Event $event)
     {
-        $event->load('category', 'organizer.user', 'clients');
-        return view('events.show', compact('event'));
+        if ($event->verified) {
+            $event->load('category', 'organizer.user', 'clients');
+            return view('events.show', compact('event'));
+        }
+        return abort('404');
     }
 
 

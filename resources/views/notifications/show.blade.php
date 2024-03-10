@@ -24,7 +24,7 @@
             <h1 class="font-bold text-lg mb-4">Subject: Reservation(s) verified</h1>
             <h2 class="font-semibold mb-6">Hello {{ Auth::user()->name }}!</h2>
 
-            <p class="mb-4">Your {{ $notification->ticket_numbers }} reservation(s) have been verified. We look
+            <p class="mb-4">Your <span class="font-bold">{{ $notification->ticket_numbers }}</span> reservation(s) have been verified. We look
                 forward to welcoming you to the event!
             </p>
 
@@ -38,7 +38,7 @@
             <h1 class="font-bold text-lg mb-4">Subject: Reservation(s) rejected</h1>
             <h2 class="font-semibold mb-6">Dear: {{ Auth::user()->name }}</h2>
             <p class="mb-4">
-                We regret to inform you that the reservation(s) you reserved got rejected for the reason(s) :
+                We regret to inform you that <span class="font-bold">{{ $notification->ticket_numbers }}</span> of the reservation(s) you reserved got rejected for the reason(s) :
             </p>
             <p class="mb-4 font-medium">
                 {{ $notification->reason }}

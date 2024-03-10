@@ -45,6 +45,8 @@ Route::middleware('account_verification')->group(function () {
         Route::get('/organizer/dashboard/events/clients/{event}', [EventController::class, 'clients'])->name('events.clients');
         Route::patch('/organizer/dashboard/events/{event}', [EventController::class, 'update']);
         Route::resource('/organizer/dashboard/events', EventController::class)->only(['store', 'destroy']);
+        Route::get('/organizer/dashboard/events/verify/{group}', [ReservationController::class, 'verify'])->name('reservations.verify');
+        Route::get('/organizer/dashboard/events/reject/{group}', [ReservationController::class, 'reject'])->name('reservations.reject');
     });
 
     Route::middleware('role:admin')->group(function () {

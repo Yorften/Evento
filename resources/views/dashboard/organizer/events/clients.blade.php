@@ -1,9 +1,6 @@
 <x-dashboard-layout>
-    @push('vite')
-        @vite('resources/js/event_edit_modal.js')
-    @endpush
     <x-sweet-alert />
-    <div id="edit-modal" tabindex="-1" aria-hidden="true"
+    <div id="modal" tabindex="-1" aria-hidden="true"
         class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
         <div class="relative p-4 w-full max-w-md max-h-full">
             <!-- Modal content -->
@@ -15,99 +12,17 @@
                     </h3>
                     <button type="button"
                         class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center"
-                        data-modal-toggle="edit-modal">
+                        data-modal-toggle="modal">
                         <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
                             viewBox="0 0 14 14">
-                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
-                                stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6" />
+                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6" />
                         </svg>
                         <span class="sr-only">Close modal</span>
                     </button>
                 </div>
                 <!-- Modal body -->
-                <form class="p-4 md:p-5" method="post" action="" id="edit_form" enctype="multipart/form-data"
-                    onsubmit="return validateForm()">
-                    @csrf
-                    @method('patch')
-                    <div class="grid gap-6 mb-4 grid-cols-2">
-                        <div class="col-span-2">
-                            <label for="edit_title" class="block mb-2 text-sm font-medium text-gray-900">Event
-                                Title</label>
-                            <input type="text" name="title" id="edit_title"
-                                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5"
-                                placeholder="Event title" required="">
-                        </div>
-                        <div class="col-span-2">
-                            <label for="edit_categories"
-                                class="block mb-2 text-sm font-medium text-gray-900">Category</label>
-                            <select name="category_id" id="edit_categories" style="width: full;"
-                                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5">
-                                <option selected="">Select Category</option>
-                                @unless (count($categories) == 0)
-                                    @foreach ($categories as $category)
-                                        <option value="{{ $category->id }}">{{ $category->name }}</option>
-                                    @endforeach
-                                @else
-                                    <option value="" disabled>No categories found</option>
-                                @endunless
-                            </select>
-                        </div>
-                        <div class="col-span-2">
-                            <label for="edit_description"
-                                class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Film
-                                Description</label>
-                            <textarea id="edit_description" name="description" rows="4"
-                                class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                                placeholder="Event description"></textarea>
-                        </div>
-                        <div class="col-span-2">
-                            <label for="edit_capacity"
-                                class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Event
-                                Capacity</label>
-                            <input type="number" id="edit_capacity" name="capacity" rows="4"
-                                class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                                placeholder="Event capacity">
-                        </div>
-                        <div class="col-span-2">
-                            <label for="edit_location"
-                                class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Event
-                                Location</label>
-                            <input type="number" id="edit_location" name="location" rows="4"
-                                class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                                placeholder="Event location">
-                        </div>
-                        <div class="col-span-2">
-                            <label for="edit_date"
-                                class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Date:</label>
-                            <input type="datetime-local" id="edit_date" name="date" value=""
-                                class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" />
-                        </div>
-                        <div class="col-span-1">
-                            <label for="image" class="block mb-2 text-sm font-medium text-gray-900">Poster</label>
-                            <input type="file" name="image" :value="old('image')" id="image"
-                                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5"
-                                placeholder="Poster">
-                        </div>
-                        <div class="col-span-1">
-                            <label for="mode" class="block mb-2 text-sm font-medium text-gray-900">Genres</label>
-                            <select name="auto" id="mode" style="width: full;"
-                                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5">
-                                <option value="1">Auto</option>
-                                <option value="0">Manual</option>
-                            </select>
-                        </div>
-                    </div>
-                    <button type="submit"
-                        class="text-white inline-flex justify-center items-center bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center w-full">
-                        <svg class="me-1 -ms-1 w-5 h-5" fill="currentColor" viewBox="0 0 20 20"
-                            xmlns="http://www.w3.org/2000/svg">
-                            <path fill-rule="evenodd"
-                                d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z"
-                                clip-rule="evenodd"></path>
-                        </svg>
-                        <p>Save</p>
-                    </button>
-                </form>
+
             </div>
         </div>
     </div>
@@ -131,82 +46,136 @@
                 </li>
                 <li class="inline-flex items-center">
                     <a href="{{ route('organizer.events') }}" class="hover:text-blue-500">Events</a>
+                    <span class="mx-4 h-auto text-gray-400 font-medium">/</span>
+                </li>
+                <li class="inline-flex items-center">
+                    <a href="{{ route('events.clients', $event->id) }}"
+                        class="hover:text-blue-500">{{ $event->title }}</a>
                 </li>
             </ul>
         </div>
+        @php
+            $eventsByVerification = $clients->groupBy(function ($client) {
+                return $client->pivot->verified;
+            });
+        @endphp
         <div class="w-full flex justify-between items-center px-2 mt-4">
-            <p class="text-none text-xl font-semibold indent-4">Accepted Events</p>
+            <p class="text-none text-xl font-semibold indent-4">Reservations</p>
+        </div>
+        <div class="mb-4 border-b border-gray-200">
+            <ul class="flex flex-wrap -mb-px text-sm font-medium text-center" id="default-styled-tab"
+                data-tabs-toggle="#default-styled-tab-content"
+                data-tabs-active-classes="text-purple-600 hover:text-purple-600 border-purple-600"
+                data-tabs-inactive-classes="text-gray-500 hover:text-gray-600 border-gray-100 hover:border-gray-300"
+                role="tablist">
+                @foreach ($eventsByVerification as $verified => $clients)
+                    @if ($loop->index < 2)
+                        <li class="me-2" role="presentation">
+                            <button class="inline-block p-4 border-b-2 rounded-t-lg" id="{{ 'day-' . $loop->index }}"
+                                data-tabs-target="{{ '#day-' . $loop->index . '-content' }}" type="button"
+                                role="tab" aria-controls="{{ 'day-' . $loop->index }}-content"
+                                aria-selected="{{ $loop->first ? 'true' : 'false' }}">
+                                @if ($verified == null)
+                                    Pending <span>
+                                        <div
+                                            class="inline-flex items-center justify-center w-6 h-6 text-xs font-bold text-white bg-red-500 border-2 border-white rounded-full -top-2 -end-0 dark:border-gray-900">
+                                            {{ $clients->count() }}</div>
+                                    </span>
+                                @else
+                                    Attending
+                                @endif
+                            </button>
+                        </li>
+                    @endif
+                @endforeach
+
+            </ul>
+        </div>
+        <div id="default-styled-tab-content" class="w-full">
+            @foreach ($eventsByVerification as $verified => $clients)
+                @if ($loop->index < 2)
+                    <div class="hidden shadow-lg border-t-2 rounded-lg w-full p-2"
+                        id="{{ 'day-' . $loop->index . '-content' }}" role="tabpanel"
+                        aria-labelledby="{{ 'day-' . $loop->index }}">
+                        <table id="table{{ $loop->index }}" class="min-w-full divide-y divide-gray-200 stripe hover"
+                            style="width:100%; padding-top: 1em;  padding-bottom: 1em;">
+                            <thead>
+                                <tr>
+                                    <th data-priority="1"
+                                        class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                        Ticket group</th>
+                                    <th data-priority="1"
+                                        class="px-8 py-4 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                        Name</th>
+                                    <th data-priority="1"
+                                        class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                        Tickets</th>
+                                    @if ($verified == null)
+                                        <th data-priority="1"
+                                            class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                            Action</th>
+                                    @endif
+                                </tr>
+                            </thead>
+                            <tbody class="bg-white divide-y divide-gray-200">
+                                @php
+                                    $clientsByGroup = $clients->groupBy(function ($client) {
+                                        return $client->pivot->group;
+                                    });
+                                @endphp
+                                @foreach ($clientsByGroup as $group => $clients)
+                                    <tr>
+                                        <td class="px-6 py-4 whitespace-nowrap">
+                                            <div class="text-sm font-medium text-gray-900">
+                                                {{ $group }}
+                                            </div>
+                                        </td>
+                                        <td class="px-6 py-4 whitespace-nowrap">
+                                            <div class="text-sm font-medium text-gray-900">
+                                                {{ $clients->first()->user->name }}
+                                            </div>
+                                        </td>
+                                        <td class="px-6 py-4 whitespace-nowrap">
+                                            <div class="text-sm font-medium text-gray-900">
+                                                {{ count($clients) }}
+                                            </div>
+                                        </td>
+                                        @if ($verified == null)
+                                            <td class="px-8 py-4 whitespace-nowrap text-right text-sm font-medium">
+                                                <a href="{{ route('reservations.verify', $group) }}"
+                                                    class="text-teal-500 hover:text-teal-700">
+                                                    Verify</a>
+                                                <a href="{{ route('reservations.reject', $group) }}"
+                                                    class="text-red-500 hover:text-red-700">
+                                                    Reject</a>
+                                            </td>
+                                        @endif
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
+                @endif
+            @endforeach
         </div>
 
-        <div class="shadow-lg border-t-2 rounded-lg w-full p-2 mt-8">
-            <table id="table" class="min-w-full divide-y divide-gray-200 stripe hover"
-                style="width:100%; padding-top: 1em;  padding-bottom: 1em;">
-                <thead>
-                    <tr>
-                        <th data-priority="1"
-                            class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                            Id</th>
-                        <th data-priority="1"
-                            class="px-8 py-4 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                            Title</th>
-                        <th data-priority="1"
-                            class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                            Date</th>
-                        <th data-priority="1"
-                            class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                            Location</th>
-                        <th data-priority="1"
-                            class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                            Capacity</th>
-                        <th data-priority="1"
-                            class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                            Action</th>
-                    </tr>
-                </thead>
-                <tbody class="bg-white divide-y divide-gray-200">
-                    @foreach ($events as $event)
-                        <tr>
-                            <td class="px-6 py-4 whitespace-nowrap">
-                                <div class="text-sm font-medium text-gray-900">
-                                    {{ $event->id }}
-                                </div>
-                            </td>
-                            <td class="px-6 py-4 whitespace-nowrap">
-                                <a href="{{ route('reservations.clients', $event->id) }}"
-                                    class="text-sm font-medium text-gray-900">
-                                    {{ $event->title }}
-                                </a>
-                            </td>
-                            <td class="px-6 py-4 whitespace-nowrap">
-                                <div class="text-sm font-medium text-gray-900">
-                                    {{ $event->date }}
-                                </div>
-                            </td>
-                            <td class="px-6 py-4 whitespace-nowrap">
-                                <div class="text-sm font-medium text-gray-900">
-                                    {{ $event->location }}
-                                </div>
-                            </td>
-                            <td class="px-6 py-4 whitespace-nowrap">
-                                <div class="text-sm font-medium text-gray-900">
-                                    {{ $event->capacity }}
-                                </div>
-                            </td>
-                            <td class="px-8 py-4 whitespace-nowrap text-right text-sm font-medium">
-                                <button href="" class="text-teal-500 hover:text-teal-700"
-                                    onclick="openEditModal({{ $event->id }}, '{{ $event->title }}', '{{ $event->description }}, {{ $event->date }}, {{ $event->location }}, {{ $event->capacity }}, {{ $event->auto }}')">
-                                    Edit</button>
-                            </td>
-                        </tr>
-                    @endforeach
-                </tbody>
-            </table>
-        </div>
     </div>
     @push('scripts')
         <script>
             $(document).ready(function() {
-                var table = $('#table').DataTable({
+                var table = $('#table0').DataTable({
+                        responsive: true,
+                        pageLength: 5,
+                        lengthMenu: [
+                            [5],
+                            [5]
+                        ]
+                    })
+                    .columns.adjust()
+                    .responsive.recalc();
+            });
+            $(document).ready(function() {
+                var table = $('#table1').DataTable({
                         responsive: true,
                         pageLength: 5,
                         lengthMenu: [

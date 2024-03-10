@@ -174,7 +174,7 @@
                                 </div>
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap">
-                                <a href="{{ route('events.clients', $event->id) }}"
+                                <a href="{{ route('events.show', $event->id) }}"
                                     class="text-sm font-medium text-gray-900">
                                     {{ $event->title }}
                                 </a>
@@ -194,10 +194,12 @@
                                     {{ $event->capacity }}
                                 </div>
                             </td>
-                            <td class="px-8 py-4 whitespace-nowrap text-right text-sm font-medium">
+                            <td class="px-8 py-4 flex whitespace-nowrap text-right text-sm font-medium">
                                 <button href="" class="text-teal-500 hover:text-teal-700"
                                     onclick="openEditModal({{ $event->id }}, '{{ $event->title }}', {{ $event->category_id }}, '{{ $event->description }}', '{{ $event->date }}', '{{ $event->location }}', {{ $event->capacity }}, {{ $event->auto }})">
                                     Edit</button>
+                                <a href="{{ route('events.clients', $event->id) }}"
+                                    class="underline font-medium ml-4">View Reservations</a>
                             </td>
                         </tr>
                     @endforeach
