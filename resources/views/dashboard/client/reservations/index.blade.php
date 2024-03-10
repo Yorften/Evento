@@ -39,6 +39,9 @@
                         <th data-priority="1"
                             class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                             Reservation date</th>
+                        <th data-priority="1"
+                            class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            Ticket</th>
                     </tr>
                 </thead>
                 <tbody class="bg-white divide-y divide-gray-200">
@@ -50,7 +53,7 @@
                                 </div>
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap">
-                                <a href="{{ route('reservations.show', $event->pivot->group) }}" target="blanc"
+                                <a href="{{ route('events.show', $event->id) }}" target="blanc"
                                     class="text-sm font-medium text-gray-900">
                                     {{ $event->title }}
                                 </a>
@@ -64,6 +67,12 @@
                                 <div class="text-sm font-medium text-gray-900">
                                     {{ $event->pivot->created_at }}
                                 </div>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <a href="{{ route('reservations.show', $event->pivot->group) }}"
+                                    class="text-sm font-medium text-gray-900 underline">
+                                    View Ticket
+                                </a>
                             </td>
                         </tr>
                     @endforeach

@@ -43,7 +43,7 @@
                             <button
                                 class="relative inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 bg-white hover:text-gray-700 focus:outline-none transition ease-in-out duration-150">
                                 @isset($notifications)
-                                    @if ($count = $notifications->where('read_at', null)->count() > 0)
+                                    @if ($count = $notifications->where('read_at', null)->count())
                                         <div
                                             class="absolute inline-flex items-center justify-center w-6 h-6 text-xs font-bold text-white bg-red-500 border-2 border-white rounded-full -top-2 -end-0 dark:border-gray-900">
                                             {{ $count }}</div>
@@ -67,9 +67,9 @@
                                 {{ __('Profile') }}
                             </x-dropdown-link>
                             @hasrole('admin')
-                            <x-dropdown-link :href="route('admin.dashboard')">
-                                {{ __('Reservations') }}
-                            </x-dropdown-link>
+                                <x-dropdown-link :href="route('admin.dashboard')">
+                                    {{ __('Reservations') }}
+                                </x-dropdown-link>
                             @endhasrole
                             @hasrole('client')
                                 <x-dropdown-link :href="route('reservations.index')">

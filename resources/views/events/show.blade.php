@@ -1,5 +1,5 @@
 @php
-    $places = $event->capacity - ($event->clients ? $event->clients->count() : 0);
+    $places = $event->capacity - ($event->clients ? $event->clients()->wherePivot('verified', true)->count() : 0);
 @endphp
 <x-app-layout>
     <!-- Main modal -->

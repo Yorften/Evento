@@ -33,6 +33,7 @@ Route::middleware('account_verification')->group(function () {
         Route::get('/reservations/history', [ReservationController::class, 'history'])->name('reservations.history');
         Route::resource('reservations', ReservationController::class)->only(['index', 'store']);
         Route::get('reservations/{group}', [ReservationController::class, 'show'])->name('reservations.show');
+        Route::resource('/notifications', NotificationController::class)->only('show');
     });
 
     Route::middleware('role:organizer')->group(function () {
@@ -41,14 +42,15 @@ Route::middleware('account_verification')->group(function () {
         Route::get('/organizer/dashboard/events/pending', [EventController::class, 'pending'])->name('events.pending');
         Route::get('/organizer/dashboard/events/history', [EventController::class, 'history'])->name('events.history');
         Route::get('/organizer/dashboard/events/rejected', [EventController::class, 'rejected'])->name('events.rejected');
-        Route::get('/organizer/dashboard/events/{event}', [EventController::class, 'clients'])->name('organizer.clients');
-        Route::resource('/organizer/dashboard/events', EventController::class)->only(['store', 'update', 'destroy']);
-        Route::resource('/dashboard/notifications', NotificationController::class)->only('show');
+        Route::get('/organizer/dashboard/events/clients/{event}', [EventController::class, 'clients'])->name('events.clients');
+        Route::patch('/organizer/dashboard/events/{event}', [EventController::class, 'update']);
+        Route::resource('/organizer/dashboard/events', EventController::class)->only(['store', 'destroy']);
     });
 
     Route::middleware('role:admin')->group(function () {
         Route::get('/dashboard', [EventController::class, 'stats'])->name('admin.dashboard');
         Route::get('/dashboard/events', [EventController::class, 'adminIndex'])->name('admin.events');
+        Route::get('/dashboard/events/{event}', [EventController::class, 'verify'])->name('events.verify');
         Route::resource('/dashboard/categories', CategoryController::class)->except(['create', 'edit', 'show']);
         Route::resource('/dashboard/organizers', OrganizerController::class)->only('index');
         Route::resource('/dashboard/clients', ClientController::class)->only('index');

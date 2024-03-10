@@ -15,8 +15,8 @@ return new class extends Migration
             $table->id();
             $table->foreignId('client_id')->constrained()->cascadeOnDelete();
             $table->string('group');
-            $table->text('reason');
-            $table->timestamp('read_at');
+            $table->text('reason')->nullable();
+            $table->timestamp('read_at')->nullable();
             $table->timestamps();
         });
     }

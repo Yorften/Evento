@@ -1,8 +1,6 @@
 <x-dashboard-layout>
     @push('vite')
         @vite('resources/js/event_edit_modal.js')
-        <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
-        <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js" defer></script>
     @endpush
     <x-sweet-alert />
     <div id="edit-modal" tabindex="-1" aria-hidden="true"
@@ -13,15 +11,15 @@
                 <!-- Modal header -->
                 <div class="flex items-center justify-between p-4 md:p-5 border-b rounded-t">
                     <h3 class="text-lg font-semibold text-gray-900">
-                        Update Event
+                        Update Film
                     </h3>
                     <button type="button"
                         class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center"
                         data-modal-toggle="edit-modal">
                         <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
                             viewBox="0 0 14 14">
-                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6" />
+                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                                stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6" />
                         </svg>
                         <span class="sr-only">Close modal</span>
                     </button>
@@ -35,14 +33,14 @@
                         <div class="col-span-2">
                             <label for="edit_title" class="block mb-2 text-sm font-medium text-gray-900">Event
                                 Title</label>
-                            <input disabled type="text" name="title" id="edit_title"
+                            <input type="text" name="title" id="edit_title"
                                 class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5"
-                                placeholder="Event title">
+                                placeholder="Event title" required="">
                         </div>
                         <div class="col-span-2">
                             <label for="edit_categories"
                                 class="block mb-2 text-sm font-medium text-gray-900">Category</label>
-                            <select disabled name="category_id" id="edit_categories" style="width: full;"
+                            <select name="category_id" id="edit_categories" style="width: full;"
                                 class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5">
                                 <option selected="">Select Category</option>
                                 @unless (count($categories) == 0)
@@ -58,7 +56,7 @@
                             <label for="edit_description"
                                 class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Film
                                 Description</label>
-                            <textarea disabled id="edit_description" name="description" rows="4"
+                            <textarea id="edit_description" name="description" rows="4"
                                 class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                 placeholder="Event description"></textarea>
                         </div>
@@ -66,7 +64,7 @@
                             <label for="edit_capacity"
                                 class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Event
                                 Capacity</label>
-                            <input disabled type="number" id="edit_capacity" name="capacity" rows="4"
+                            <input type="number" id="edit_capacity" name="capacity" rows="4"
                                 class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                 placeholder="Event capacity">
                         </div>
@@ -74,25 +72,25 @@
                             <label for="edit_location"
                                 class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Event
                                 Location</label>
-                            <input disabled type="text" id="edit_location" name="location" rows="4"
+                            <input type="number" id="edit_location" name="location" rows="4"
                                 class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                 placeholder="Event location">
                         </div>
                         <div class="col-span-2">
                             <label for="edit_date"
                                 class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Date:</label>
-                            <input disabled type="datetime-local" id="edit_date" name="date" value=""
+                            <input type="datetime-local" id="edit_date" name="date" value=""
                                 class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" />
                         </div>
                         <div class="col-span-1">
                             <label for="image" class="block mb-2 text-sm font-medium text-gray-900">Poster</label>
-                            <input disabled type="file" name="image" :value="old('image')" id="image"
+                            <input type="file" name="image" :value="old('image')" id="image"
                                 class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5"
                                 placeholder="Poster">
                         </div>
                         <div class="col-span-1">
-                            <label for="edit_mode" class="block mb-2 text-sm font-medium text-gray-900">Genres</label>
-                            <select name="auto" id="edit_mode" style="width: full;"
+                            <label for="mode" class="block mb-2 text-sm font-medium text-gray-900">Genres</label>
+                            <select name="auto" id="mode" style="width: full;"
                                 class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5">
                                 <option value="1">Auto</option>
                                 <option value="0">Manual</option>
@@ -174,7 +172,7 @@
                                 </div>
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap">
-                                <a href="{{ route('events.clients', $event->id) }}"
+                                <a href="{{ route('reservations.clients', $event->id) }}"
                                     class="text-sm font-medium text-gray-900">
                                     {{ $event->title }}
                                 </a>
@@ -196,7 +194,7 @@
                             </td>
                             <td class="px-8 py-4 whitespace-nowrap text-right text-sm font-medium">
                                 <button href="" class="text-teal-500 hover:text-teal-700"
-                                    onclick="openEditModal({{ $event->id }}, '{{ $event->title }}', {{ $event->category_id }}, '{{ $event->description }}', '{{ $event->date }}', '{{ $event->location }}', {{ $event->capacity }}, {{ $event->auto }})">
+                                    onclick="openEditModal({{ $event->id }}, '{{ $event->title }}', '{{ $event->description }}, {{ $event->date }}, {{ $event->location }}, {{ $event->capacity }}, {{ $event->auto }}')">
                                     Edit</button>
                             </td>
                         </tr>
@@ -219,21 +217,6 @@
                     .columns.adjust()
                     .responsive.recalc();
             });
-            $(document).ready(function() {
-                $('#categories').select2({
-                    width: '100%',
-                    disabled: true,
-                });
-            });
-
-            function select_categories_fun() {
-                $(document).ready(function() {
-                    $('#edit_categories').select2({
-                        width: '100%',
-                        disabled: true,
-                    });
-                });
-            }
         </script>
     @endpush
 </x-dashboard-layout>

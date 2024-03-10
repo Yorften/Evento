@@ -35,6 +35,9 @@
         @isset($notifications)
             <x-notifications-modal :notifications="$notifications" />
         @endisset
+        @isset($org_notifications)
+            <x-notifications-modal :notifications="$org_notifications" />
+        @endisset
         <x-sweet-alert />
         <!-- Page Content -->
         <main class="min-h-[90vh]">

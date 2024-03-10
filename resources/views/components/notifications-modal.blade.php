@@ -1,8 +1,8 @@
 <div id="notifications-modal" tabindex="-1" aria-hidden="true"
-    class="hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
+    class="hidden fixed top-0 right-0 left-0 z-[100] justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
     <div class="relative p-4 w-full max-w-5xl max-h-full">
         <!-- Modal content -->
-        <div class="relative bg-white rounded-lg shadow">
+        <div class="relative bg-white rounded-lg shadow-md">
             <!-- Modal header -->
             <div class="flex items-center justify-between p-4 md:p-5 border-b rounded-t">
                 <h3 class="text-lg font-semibold text-gray-900">
@@ -24,12 +24,29 @@
                 <div
                     class="w-full h-1/3 md:h-auto md:w-1/3 flex flex-col gap-1 border-b-2 md:border-r-2 p-1 overflow-y-auto overflow-x-hidden">
                     @foreach ($notifications as $notification)
-                        <a href="{{ route('notification.show', $notification->id) }}" target="contentFrame"
-                            class="w-full bg-red-400 rounded-md border border-red-600">
-                            <p class="flex items-center text-red-950 font-bold h-12 ml-2">Film
-                                {{ $notification->type }}
-                            </p>
-                        </a>
+                        @if ($notification->accepted)
+                            <a href="{{ route('notifications.show', $notification->id) }}" target="contentFrame"
+                                class="relative w-full bg-gray-100 rounded-md shadow-sm hover:shadow-md transition-all duration-500">
+                                <p class="flex items-center text-gray-800 font-bold h-12 ml-2">Resrvation(s) verified
+                                </p>
+                                @if ($notification->read_at == null)
+                                    <div
+                                        class="absolute inline-flex items-center justify-center w-6 h-6 text-xs font-bold text-white bg-red-500 border-2 border-white rounded-full top-3 end-4 dark:border-gray-900">
+                                    </div>
+                                @endif
+                            </a>
+                        @else
+                            <a href="{{ route('notifications.show', $notification->id) }}" target="contentFrame"
+                                class="relative w-full bg-gray-100 rounded-md shadow-sm hover:shadow-md transition-all duration-500">
+                                <p class="flex items-center text-gray-800 font-bold h-12 ml-2">Resrvation(s) rejected
+                                </p>
+                                @if ($notification->read_at == null)
+                                    <div
+                                        class="absolute inline-flex items-center justify-center w-6 h-6 text-xs font-bold text-white bg-red-500 border-2 border-white rounded-full -top-2 -end-0 dark:border-gray-900">
+                                    </div>
+                                @endif
+                            </a>
+                        @endif
                     @endforeach
                 </div>
                 <div class="w-full h-full md:w-2/3">

@@ -37,7 +37,7 @@ trait ImageUpload
     }
     public function move($image)
     {
-        $imageName = time() . '_' . uniqid() . $image->extension();
+        $imageName = time() . '_' . uniqid() . '.' . $image->extension();
         $image->storeAs('public/', $imageName);
         return $imageName;
     }

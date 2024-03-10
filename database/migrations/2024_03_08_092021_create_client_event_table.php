@@ -12,6 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('client_event', function (Blueprint $table) {
+            $table->id();
             $table->foreignId('client_id')->constrained()->cascadeOnDelete();
             $table->foreignId('event_id')->constrained()->cascadeOnDelete();
             $table->string('group');

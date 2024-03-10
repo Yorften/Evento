@@ -21,6 +21,11 @@ class UpdateEventRequest extends FormRequest
      */
     public function rules(): array
     {
+        if($this->event->verified){
+            return [
+                'auto' => 'required',
+            ];
+        }
         return [
             'title' => 'required',
             'description' => 'required',

@@ -18,9 +18,4 @@ class Organizer extends Model
     {
         return $this->hasMany(Event::class);
     }
-
-    public function notifications()
-    {
-        return $this->hasMany(Notification::class);
-    }
 }

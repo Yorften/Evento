@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\EventModeUpdated;
 use Carbon\Carbon;
 use App\Models\Event;
 use App\Models\Category;
@@ -11,6 +12,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use App\Http\Requests\StoreEventRequest;
+use App\Http\Requests\UpdateEventRequest;
 
 class EventController extends Controller
 {
@@ -23,7 +25,7 @@ class EventController extends Controller
     {
         $now = Carbon::now()->toDateTimeString();
         // change back to true later;
-        $events = Event::with('organizer.user', 'category')->where('verified', null)->where('date', '>', $now)->orderBy('date')->filter(request(['category', 'title']))->paginate(6);
+        $events = Event::with('organizer.user', 'category')->where('verified', true)->where('date', '>', $now)->orderBy('date')->filter(request(['category', 'title']))->paginate(6);
         $category_filter = request()->input('category');
         $categories = Category::all();
         return view('events.index', compact('events', 'categories', 'category_filter'));
@@ -47,31 +49,33 @@ class EventController extends Controller
         $organizer = Organizer::where('user_id', Auth::id())->first();
         $now = Carbon::now()->toDateTimeString();
         $events = Event::where('organizer_id', $organizer->id)->where('verified', true)->where('date', '>', $now)->orderBy('date')->get();
-        return view('dashboard.organizer.events.index', compact('events'));
+        $categories = Category::all();
+        return view('dashboard.organizer.events.index', compact('events', 'categories'));
     }
 
     public function pending()
     {
         $organizer = Organizer::where('user_id', Auth::id())->first();
         $now = Carbon::now()->toDateTimeString();
-        $events = Event::where('organizer_id', $organizer->id)->where('verified', null)->where('date', '>', $now)->orderBy('date')->get();
+        $events = Event::where('organizer_id', $organizer->id)->where('verified', null)->where('date', '>', $now)->orderBy('date')->with('category')->get();
         $categories = Category::all();
         return view('dashboard.organizer.events.pending', compact('events', 'categories'));
     }
 
     public function rejected()
-    {   
+    {
         $organizer = Organizer::where('user_id', Auth::id())->first();
         $now = Carbon::now()->toDateTimeString();
-        $events = Event::where('organizer_id', $organizer->id)->where('verified', false)->where('date', '>', $now)->orderBy('date')->get();
+        $events = Event::where('organizer_id', $organizer->id)->where('verified', false)->where('date', '>', $now)->orderBy('date')->with('category')->get();
         $categories = Category::all();
         return view('dashboard.organizer.events.rejected', compact('events', 'categories'));
     }
 
     public function history()
     {
+        $now = Carbon::now()->toDateTimeString();
         $organizer = Organizer::where('user_id', Auth::id())->first();
-        $events = Event::where('organizer_id', $organizer->id)->where('verified', true)->orderBy('date')->get();
+        $events = Event::where('organizer_id', $organizer->id)->where('verified', true)->where('date', '<', $now)->orderBy('date')->get();
         return view('dashboard.organizer.events.history', compact('events'));
     }
 
@@ -149,8 +153,25 @@ class EventController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Event $event)
+    public function update(UpdateEventRequest $request, Event $event)
     {
+        $validated = $request->validated();
+        if (count($validated) == 1) {
+            $event->update($validated);
+            if ($validated['auto'] == 1) {
+                event(new EventModeUpdated($event));
+                return back()->with([
+                    'message' => 'Mode updated successfully to automatic. Any previous pending reservations will be accepted by date.',
+                    'operationSuccessful' => true,
+                ]);
+            }
+            return back()->with([
+                'message' => 'Mode updated successfully to manual.',
+                'operationSuccessful' => true,
+            ]);
+        }
+        $event->update($validated);
+
         if ($request->hasFile('image')) {
             $this->storeImg($request->file('image'), $event);
             $this->upadateImg($request->file('image'), $event);
@@ -171,9 +192,9 @@ class EventController extends Controller
             Storage::delete('public/' . $event->image->path);
             $event->image->delete();
         }
-    
+
         $event->delete();
-    
+
         return back()->with([
             'message' => 'Event deleted successfully!',
             'operationSuccessful' => true,

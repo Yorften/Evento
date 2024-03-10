@@ -27,7 +27,7 @@
         </div>
 
         <div class="shadow-lg border-t-2 rounded-lg w-full p-2 mt-8">
-            {{-- <table id="table" class="min-w-full divide-y divide-gray-200 stripe hover"
+            <table id="table" class="min-w-full divide-y divide-gray-200 stripe hover"
                 style="width:100%; padding-top: 1em;  padding-bottom: 1em;">
                 <thead>
                     <tr>
@@ -36,13 +36,19 @@
                             Id</th>
                         <th data-priority="1"
                             class="px-8 py-4 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                            Event</th>
+                            Title</th>
                         <th data-priority="1"
                             class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                             Date</th>
                         <th data-priority="1"
                             class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                            Reservation date</th>
+                            Location</th>
+                        <th data-priority="1"
+                            class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            Capacity</th>
+                        <th data-priority="1"
+                            class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            Action</th>
                     </tr>
                 </thead>
                 <tbody class="bg-white divide-y divide-gray-200">
@@ -54,7 +60,8 @@
                                 </div>
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap">
-                                <a href="{{ route('reservations.show', $event->id) }}" class="text-sm font-medium text-gray-900">
+                                <a href="{{ route('events.clients', $event->id) }}"
+                                    class="text-sm font-medium text-gray-900">
                                     {{ $event->title }}
                                 </a>
                             </td>
@@ -65,13 +72,23 @@
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap">
                                 <div class="text-sm font-medium text-gray-900">
-                                    {{ $event->pivot->created_at }}
+                                    {{ $event->location }}
                                 </div>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <div class="text-sm font-medium text-gray-900">
+                                    {{ $event->capacity }}
+                                </div>
+                            </td>
+                            <td class="px-8 py-4 whitespace-nowrap text-right text-sm font-medium">
+                                <button href="" class="text-teal-500 hover:text-teal-700"
+                                    onclick="openEditModal({{ $event->id }}, '{{ $event->title }}', '{{ $event->description }}, {{ $event->date }}, {{ $event->location }}, {{ $event->capacity }}, {{ $event->auto }}')">
+                                    Edit</button>
                             </td>
                         </tr>
                     @endforeach
                 </tbody>
-            </table> --}}
+            </table>
         </div>
     </div>
     @push('scripts')

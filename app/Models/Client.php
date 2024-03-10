@@ -18,4 +18,9 @@ class Client extends Model
     {
         return $this->belongsToMany(Event::class);
     }
+
+    public function notifications()
+    {
+        return $this->hasMany(Notification::class);
+    }
 }
