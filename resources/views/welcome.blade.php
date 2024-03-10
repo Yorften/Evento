@@ -110,7 +110,7 @@
                                 @foreach ($events as $event)
                                     <li>
                                         <div class="flex flex-col md:flex-row gap-4">
-                                            @if (!$event->images == null)
+                                            @if ($event->image == null)
                                                 <img src="{{ asset('assets/images/poster.jpg') }}"
                                                     class="w-full md:w-[30%] h-full inline-block shrink-0 rounded-2xl"
                                                     alt="">

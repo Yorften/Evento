@@ -12,7 +12,7 @@ trait ImageUpload
 
         $imageName = time() . '_' . uniqid() . '.png';
 
-        file_put_contents(public_path('storage/' . $imageName), $imageContents);
+        file_put_contents(public_path('app/public/' . $imageName), $imageContents);
 
         Image::create([
             "path" => $imageName,
@@ -38,7 +38,7 @@ trait ImageUpload
     public function move($image)
     {
         $imageName = time() . '_' . uniqid() . '.' . $image->extension();
-        $image->storeAs('public/', $imageName);
+        $image->storeAs('public/' . $imageName);
         return $imageName;
     }
 }
