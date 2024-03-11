@@ -2,12 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use Carbon\Carbon;
 use App\Models\Organizer;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Providers\RouteServiceProvider;
 use App\Http\Requests\StoreOrganizerRequest;
 use App\Http\Requests\UpdateOrganizerRequest;
+use App\Models\Event;
 
 class OrganizerController extends Controller
 {
@@ -24,7 +26,14 @@ class OrganizerController extends Controller
 
     public function stats()
     {
-        return view('dashboard.organizer.index');
+        $organizer = Organizer::where('user_id', Auth::id())->first();
+        $events = Event::where('organizer_id', $organizer->id)->where('verified', true)->get();
+        $maxAttendedEvent = $events->sortByDesc(function ($event) {
+            return $event->clients()->wherePivot('verified', true)->count();
+        })->first();
+        $count = $maxAttendedEvent->clients()->wherePivot('verified', true)->count();
+        $totalEvents = count($events);
+        return view('dashboard.organizer.index', compact('maxAttendedEvent', 'count', 'totalEvents'));
     }
 
     /**

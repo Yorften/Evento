@@ -2,17 +2,19 @@
 
 namespace App\Http\Controllers;
 
-use App\Events\EventModeUpdated;
 use Carbon\Carbon;
+use App\Models\User;
 use App\Models\Event;
 use App\Models\Category;
 use App\Models\Organizer;
 use App\Traits\ImageUpload;
 use Illuminate\Http\Request;
+use App\Events\EventModeUpdated;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use App\Http\Requests\StoreEventRequest;
 use App\Http\Requests\UpdateEventRequest;
+use App\Models\ClientEvent;
 
 class EventController extends Controller
 {
@@ -70,7 +72,7 @@ class EventController extends Controller
                 'operationSuccessful' => true,
             ]);
         }
-        
+
         $validated['read_at'] = null;
         $validated['verified'] = null;
 
@@ -156,7 +158,10 @@ class EventController extends Controller
 
     public function stats()
     {
-        return view('dashboard.admin.index');
+        $today = Carbon::today();
+        $new_users = User::whereDate('created_at', $today)->count();
+        $reservations = ClientEvent::where('verified', true)->count();
+        return view('dashboard.admin.index', compact('new_users', 'reservations'));
     }
 
 

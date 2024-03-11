@@ -21,8 +21,33 @@
             <p class="text-none text-xl font-semibold indent-4">Stats</p>
         </div>
 
-        <div class="shadow-lg border-t-2 rounded-lg w-full p-2 mt-8">
-            Stats
+        <div
+            class="shadow-lg border-t-2 flex flex-col md:flex-row justify-center items-center gap-4 rounded-lg w-full h-[60vh] md:[&>*]:w-2/5 [&>*]:w-full p-2 mt-8">
+            <div class="mx-auto mt-4">
+                <div
+                    class="w-full bg-white max-w-xs mx-auto rounded-sm overflow-hidden shadow-lg hover:shadow-2xl transition duration-500 transform hover:scale-100">
+                    <div class="h-20 bg-red-400 flex items-center justify-between">
+                        <p class="mr-0 text-white text-lg pl-5">New users today</p>
+                    </div>
+                    <div class="flex justify-between px-5 pt-6 mb-2 text-sm text-gray-600">
+                        <p>TOTAL</p>
+                    </div>
+                    <p class="py-4 text-3xl ml-5">{{ $new_users }}</p>
+                </div>
+            </div>
+
+            <div class="mx-auto mt-4">
+                <div
+                    class="w-full bg-white max-w-xs mx-auto rounded-sm overflow-hidden shadow-lg hover:shadow-2xl transition duration-500 transform hover:scale-100">
+                    <div class="h-20 bg-blue-500 flex items-center justify-between">
+                        <p class="mr-0 text-white text-lg pl-5">Lifetime Reservations</p>
+                    </div>
+                    <div class="flex justify-between px-5 pt-6 mb-2 text-sm text-gray-600">
+                        <p>TOTAL</p>
+                    </div>
+                    <p class="py-4 text-3xl ml-5">{{ $reservations }}</p>
+                </div>
+            </div>
         </div>
     </div>
 </x-dashboard-layout>
