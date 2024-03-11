@@ -1,8 +1,6 @@
 <x-dashboard-layout>
     @push('vite')
         @vite('resources/js/category_edit_modal.js')
-        <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
-        <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js" defer></script>
     @endpush
     <x-sweet-alert />
     <div id="crud-modal" tabindex="-1" aria-hidden="true"

@@ -11,11 +11,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('bans', function (Blueprint $table) {
-            $table->id();
-            $table->text('reason');
-            $table->foreignId('user_id')->constrained()->cascadeOnDelete();
-            $table->timestamps();
+        Schema::table('bans', function (Blueprint $table) {
+            $table->softDeletes();
         });
     }
 
@@ -24,6 +21,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('bans');
+        Schema::table('bans', function (Blueprint $table) {
+            $table->dropColumn('deleted_at');
+        });
     }
 };

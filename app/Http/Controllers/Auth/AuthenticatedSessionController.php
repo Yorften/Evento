@@ -2,13 +2,14 @@
 
 namespace App\Http\Controllers\Auth;
 
-use App\Http\Controllers\Controller;
-use App\Http\Requests\Auth\LoginRequest;
-use App\Providers\RouteServiceProvider;
-use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
+use App\Models\Ban;
 use Illuminate\View\View;
+use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Http\RedirectResponse;
+use App\Providers\RouteServiceProvider;
+use App\Http\Requests\Auth\LoginRequest;
 
 class AuthenticatedSessionController extends Controller
 {
@@ -31,6 +32,14 @@ class AuthenticatedSessionController extends Controller
         if (Auth::attempt($credentials)) {
 
             $user = Auth::user();
+
+            if ($user && $ban = Ban::where('user_id', $user->id)->first()) {
+                Auth::logout();
+                return redirect()->back()->with([
+                    'message' => 'Your account is banned. Reason: ' . $ban->reason,
+                    'operationSuccessful' => false,
+                ]);
+            }
 
             if (isset($data['remember']) && !empty($data['remember'])) {
                 setcookie("email", $data['email'], time() + 3600);

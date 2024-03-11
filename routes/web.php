@@ -47,6 +47,8 @@ Route::middleware('account_verification')->group(function () {
         Route::resource('/organizer/dashboard/events', EventController::class)->only(['store', 'destroy']);
         Route::get('/organizer/dashboard/events/verify/{group}', [ReservationController::class, 'verify'])->name('reservations.verify');
         Route::get('/organizer/dashboard/events/reject/{group}', [ReservationController::class, 'reject'])->name('reservations.reject');
+        Route::get('/organizer/notifications/{event}', [NotificationController::class, 'event'])->name('notifications.event');
+
     });
 
     Route::middleware('role:admin')->group(function () {
@@ -58,7 +60,8 @@ Route::middleware('account_verification')->group(function () {
         Route::resource('/dashboard/categories', CategoryController::class)->except(['create', 'edit', 'show']);
         Route::resource('/dashboard/organizers', OrganizerController::class)->only('index');
         Route::resource('/dashboard/clients', ClientController::class)->only('index');
-        Route::resource('/dashboard/bans', BanController::class)->only(['store', 'update', 'destroy']);
+        Route::post('/dashboard/bans/{user}', [BanController::class, 'store'])->name('bans.store');
+        Route::delete('/dashboard/bans/{user}', [BanController::class, 'destroy'])->name('bans.destroy');
     });
 });
 

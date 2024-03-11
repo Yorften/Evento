@@ -71,6 +71,13 @@
                                                 {{ $count }}</div>
                                         @endif
                                     @endisset
+                                    @isset($org_notifications)
+                                        @if ($count = $org_notifications->where('read_at', null)->count())
+                                            <div
+                                                class="absolute inline-flex items-center justify-center w-6 h-6 text-xs font-bold text-white bg-red-500 border-2 border-white rounded-full -top-2 -end-0 dark:border-gray-900">
+                                                {{ $count }}</div>
+                                        @endif
+                                    @endisset
                                     <div>{{ Auth::user()->name }}</div>
 
                                     <div class="ms-1">
@@ -650,7 +657,7 @@
                 <x-notifications-modal :notifications="$notifications" />
             @endisset
             @isset($org_notifications)
-                <x-notifications-modal :notifications="$org_notifications" />
+                <x-org-notifications-modal :notifications="$org_notifications" />
             @endisset
             <main class="h-full ml-14 mt-14 mb-10 md:ml-64">
                 {{ $slot }}

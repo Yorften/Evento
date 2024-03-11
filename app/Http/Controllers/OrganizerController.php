@@ -50,21 +50,6 @@ class OrganizerController extends Controller
         return redirect(RouteServiceProvider::HOME);
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(Organizer $organizer)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Organizer $organizer)
-    {
-        //
-    }
 
     /**
      * Update the specified resource in storage.
@@ -79,13 +64,5 @@ class OrganizerController extends Controller
             'message' => 'Organization information updated successfully',
             'operationSuccessful' => true,
         ]);
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Organizer $organizer)
-    {
-        //
     }
 }

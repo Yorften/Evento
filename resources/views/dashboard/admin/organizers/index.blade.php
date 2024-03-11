@@ -1,4 +1,49 @@
 <x-dashboard-layout>
+    @push('vite')
+        @vite('resources/js/organizer_edit_modal.js')
+    @endpush
+    <x-sweet-alert />
+    <div id="edit-modal" tabindex="-1" aria-hidden="true"
+        class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
+        <div class="relative p-4 w-full max-w-md max-h-full">
+            <!-- Modal content -->
+            <div class="relative bg-white rounded-lg shadow">
+                <!-- Modal header -->
+                <div class="flex items-center justify-between p-4 md:p-5 border-b rounded-t">
+                    <h3 class="text-lg font-semibold text-gray-900">
+                        Ban Reason
+                    </h3>
+                    <button type="button"
+                        class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center"
+                        data-modal-toggle="edit-modal">
+                        <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
+                            viewBox="0 0 14 14">
+                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6" />
+                        </svg>
+                        <span class="sr-only">Close modal</span>
+                    </button>
+                </div>
+                <!-- Modal body -->
+                <form class="p-4 md:p-5" method="post" action="{{ route('bans.store', 2) }}" id="edit_form"
+                    enctype="multipart/form-data">
+                    @csrf
+                    <div class="grid gap-6 mb-4 grid-cols-2">
+                        <div class="col-span-2">
+                            <label for="edit_name" class="block mb-2 text-sm font-medium text-gray-900">Reason</label>
+                            <input type="text" name="reason" id="edit_name"
+                                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5"
+                                placeholder="Reason" required="">
+                        </div>
+                    </div>
+                    <button type="submit"
+                        class="text-white inline-flex justify-center items-center bg-red-600 hover:bg-red-700 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center w-full">
+                        <p>Ban</p>
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
     <div class="w-11/12 mx-auto flex flex-col items-start justify-start mt-8 text-gray-900">
         <div class="flex items-center flex-wrap">
             <ul class="flex items-center">
@@ -27,7 +72,66 @@
         </div>
 
         <div class="shadow-lg border-t-2 rounded-lg w-full p-2 mt-8">
-
+            <table id="table" class="min-w-full divide-y divide-gray-200 stripe hover"
+                style="width:100%; padding-top: 1em;  padding-bottom: 1em;">
+                <thead>
+                    <tr>
+                        <th data-priority="1"
+                            class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            Id</th>
+                        <th data-priority="1"
+                            class="px-8 py-4 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            Name</th>
+                        <th data-priority="1"
+                            class="px-8 py-4 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            Company</th>
+                        <th data-priority="1"
+                            class="px-8 py-4 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            Type</th>
+                        <th data-priority="1"
+                            class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            Action</th>
+                    </tr>
+                </thead>
+                <tbody class="bg-white divide-y divide-gray-200">
+                    @foreach ($organizers as $organizer)
+                        <tr>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <div class="text-sm font-medium text-gray-900">
+                                    {{ $organizer->id }}
+                                </div>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <div class="text-sm font-medium text-gray-900">
+                                    {{ $organizer->user->name }}
+                                </div>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <div class="text-sm font-medium text-gray-900">
+                                    {{ $organizer->company }}
+                                </div>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <div class="text-sm font-medium text-gray-900">
+                                    {{ $organizer->type }}
+                                </div>
+                            </td>
+                            <td class="px-8 py-4 whitespace-nowrap text-right text-sm font-medium">
+                                <button class="text-red-500 hover:text-red-700"
+                                    onclick="openEditModal({{ $organizer->user->id }})">
+                                    Ban</button>
+                                <form action="{{ route('bans.destroy', $organizer->user->id) }}" method="POST"
+                                    class="inline-block">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit"
+                                        class="text-green-500 hover:text-green-700 ml-4">Unban</button>
+                                </form>
+                            </td>
+                        </tr>
+                    @endforeach
+                </tbody>
+            </table>
         </div>
     </div>
     @push('scripts')

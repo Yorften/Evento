@@ -7,6 +7,8 @@ use App\Models\Event;
 use App\Models\Category;
 use App\Models\Organizer;
 use App\Traits\ImageUpload;
+use Carbon\Carbon;
+
 use function Laravel\Prompts\text;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
@@ -35,6 +37,7 @@ class EventFactory extends Factory
             'auto' => true,
             'date' => fake()->dateTimeInInterval('+2 week', '+1 week'),
             'location' => fake()->city(),
+            'read_at' => Carbon::now()->toDateTimeString(),
         ];
     }
 

@@ -38,16 +38,6 @@ class ClientOrganizerVerification
             }
         }
 
-        if ($user && $ban = Ban::where('user_id', $user->id)->where(function ($query) {
-            $query->where('ban_expiry', '>', now()->toDateTimeString())
-                ->orWhereNull('ban_expiry');
-        })->orderBy('ban_expiry', 'desc')->exists()) {
-            return redirect()->route('login')->with([
-                'message' => $ban->first()->reason,
-                'operationSuccessful' => false,
-            ]);
-        }
-
         return $next($request);
     }
 }
