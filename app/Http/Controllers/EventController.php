@@ -15,6 +15,8 @@ use Illuminate\Support\Facades\Storage;
 use App\Http\Requests\StoreEventRequest;
 use App\Http\Requests\UpdateEventRequest;
 use App\Models\ClientEvent;
+use Illuminate\Support\Facades\Gate;
+
 
 class EventController extends Controller
 {
@@ -39,6 +41,9 @@ class EventController extends Controller
      */
     public function show(Event $event)
     {
+        // $response = Gate::inspect('update', $event);
+        // dd($response);
+
         if ($event->verified) {
             $event->load('category', 'organizer.user', 'clients');
             return view('events.show', compact('event'));

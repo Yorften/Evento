@@ -44,9 +44,17 @@
                         <p class="mr-0 text-white text-lg pl-5">Most Attended Event</p>
                     </div>
                     <div class="flex justify-between px-5 pt-6 mb-2 text-sm text-gray-600">
-                        <p>{{ $maxAttendedEvent->title }}</p>
+                        @isset($maxAttendedEvent)
+                            <p>{{ $maxAttendedEvent->title }}</p>
+                        @else
+                            <p>No data found</p>
+                        @endisset
                     </div>
-                    <p class="py-4 text-3xl ml-5">{{ $count }} reservations</p>
+                    @isset($count)
+                        <p class="py-4 text-3xl ml-5">{{ $count }} reservations</p>
+                    @else
+                        <p></p>
+                    @endisset
                 </div>
             </div>
 
