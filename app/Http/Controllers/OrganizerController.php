@@ -31,11 +31,11 @@ class OrganizerController extends Controller
         $maxAttendedEvent = $events->sortByDesc(function ($event) {
             return $event->clients()->wherePivot('verified', true)->count();
         })->first();
+        $totalEvents = count($events);
         if ($maxAttendedEvent) {
             $count = $maxAttendedEvent->clients()->wherePivot('verified', true)->count();
             return view('dashboard.organizer.index', compact('maxAttendedEvent', 'count', 'totalEvents'));
         }
-        $totalEvents = count($events);
         return view('dashboard.organizer.index', compact('totalEvents'));
     }
 

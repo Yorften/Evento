@@ -30,7 +30,7 @@ class VerifyReservations
         $counter = 0;
         $places = $event->capacity - ($event->clients ? $event->clients()->wherePivot('verified', true)->count() : 0);
 
-        $reservations = ClientEvent::where('event_id', $event->id)->get();
+        $reservations = ClientEvent::where('event_id', $event->id)->where('verified', null)->get();
 
         $reservationsByGroup = $reservations->groupBy(function ($reservation) {
             return $reservation->group;
